@@ -23,7 +23,7 @@ const Home: NextPage = () => {
         </div>
       </div>
       <div style={{ zIndex: -1 }} className="absolute bottom-0 right-0 overflow-hidden">
-        <svg width="1991" height="1304" viewBox="0 0 1991 1304" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-[50rem] translate-y-[45rem] md:translate-y-[34rem]">
+        <svg width="1991" height="1304" viewBox="0 0 1991 1304" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-[50rem] md:translate-x-[35rem] translate-y-[45rem] md:translate-y-[34rem]">
           <g filter="url(#filter0_f_15_1563)">
             <path
               d="M635.726 639.335C380.033 591.754 303.37 747.628 297 831.512C350.707 850.485 529.087 908.511 812.957 988.835C1096.83 1069.16 1484.29 863.702 1642.54 750.932C1716.1 667.794 1767.08 471.524 1382.5 351.549C997.907 231.574 1007.17 337.16 1059.88 404.949C1087.48 439.697 1131.07 527.29 1084.61 599.685C1026.53 690.177 955.342 698.811 635.726 639.335Z"
