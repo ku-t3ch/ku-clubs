@@ -10,20 +10,10 @@ interface Props {
   children: ReactNode;
 }
 
-const withNavbar: string[] = [
-  "/",
-];
+const withNavbar: string[] = ["/", "/explore", "/add-club", "/my-clubs"];
 
 export const NavbarContextProvider: NextPage<Props> = ({ children }) => {
   const { pathname } = useRouter();
 
-  return (
-    <NavbarContext.Provider value={null}>
-      {withNavbar.includes(pathname) ? (
-        <WithNavbar>{children}</WithNavbar>
-      ) : (
-        children
-      )}
-    </NavbarContext.Provider>
-  );
+  return <NavbarContext.Provider value={null}>{withNavbar.includes(pathname) ? <WithNavbar>{children}</WithNavbar> : children}</NavbarContext.Provider>;
 };
