@@ -5,6 +5,7 @@ import { api } from "@/utils/api";
 import "@/styles/globals.css";
 import SEO from "@/next-seo.config";
 import { DefaultSeo } from "next-seo";
+import { NavbarContextProvider } from "@/contexts/NavbarContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -14,7 +15,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <>
       <DefaultSeo {...SEO} />
       <SessionProvider session={session}>
-        <Component {...pageProps} />
+        <NavbarContextProvider>
+          <Component {...pageProps} />
+        </NavbarContextProvider>
       </SessionProvider>
     </>
   );

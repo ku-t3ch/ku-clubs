@@ -5,7 +5,7 @@ export default {
   description: "KU Clubs คือ เว็บรวบรวมกลุ่มกิจกรรมของมหาวิทยาลัยเกษตรศาสตร์",
   openGraph: {
     title: "KU Clubs",
-    url: "https://clubs.kutech.club",
+    url: "https://clubs.tech.nisit.ku.ac.th",
     type: "website",
     description: "KU Clubs คือ เว็บรวบรวมกลุ่มกิจกรรมของมหาวิทยาลัยเกษตรศาสตร์",
     images: [
