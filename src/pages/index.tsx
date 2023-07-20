@@ -38,7 +38,7 @@ const Home: NextPage = () => {
             <filter id="filter0_f_15_1563" x="0.472412" y="0.5" width="1990.03" height="1303" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
               <feFlood flood-opacity="0" result="BackgroundImageFix" />
               <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-              <feGaussianBlur stdDeviation="148" result="effect1_foregroundBlur_15_1563" />
+              <feGaussianBlur stdDeviation="148" result="effect1_foregroundBlu_15_1563" />
             </filter>
           </defs>
         </svg>
