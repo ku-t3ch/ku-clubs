@@ -58,9 +58,9 @@ const Navbar: NextPage<Props> = () => {
                 </Link>
               ))}
             </div>
-            <div className="btn-primary px-5">
+            <Link href="/sign-in" className="btn-primary px-5">
               <Icon icon="mdi:login" className="text-2xl text-white" />
-            </div>
+            </Link>
           </div>
         </div>
       </div>
@@ -79,6 +79,9 @@ const Navbar: NextPage<Props> = () => {
                 {item.label}
               </Link>
             ))}
+            <Link href="/sign-in" className={clsx("font-bold", "text-red-500")}>
+              เข้าสู่ระบบ
+            </Link>
           </div>
         </div>
       )}
