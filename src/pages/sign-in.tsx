@@ -1,5 +1,4 @@
 import Band from "@/components/common/Band";
-import Input from "@/components/form/Input";
 import LayoutNavbar from "@/layouts/WithNavbar";
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";
