@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import { FC, Ref } from "react";
 
 interface Props {
@@ -21,23 +22,28 @@ const Input: FC<Props> = ({
   placeholder,
   className,
 }) => {
-  let styled = "rounded-[.5rem] focus:outline-blue-400";
+  let styled = ["rounded-[.5rem] focus:outline-blue-400 shadow-sm"];
 
   if (outline) {
-    styled += " border-2 border-[#D1D5DB]";
+    styled.push("border border-[#D1D5DB]");
   } else {
-    styled += " bg-gray-100 drop-shadow-sm ";
+    styled.push("bg-gray-100 drop-shadow-sm");
+  }
+
+  if (!size) {
+    size = "medium";
   }
 
   switch (size) {
     case "small":
-      styled += " text-[.75rem] p-[.55rem]";
+      styled.push("text-[.75rem] p-[.4rem]");
+      break;
+    case "medium":
+      styled.push("text-[.8rem] p-[.6rem]");
       break;
     case "large":
-      styled += " text-[.85rem] p-[.65rem]";
+      styled.push("text-[.85rem] p-[.8em]");
       break;
-    default:
-      styled += " text-[.8rem] p-[.6rem]";
   }
 
   return (
@@ -47,9 +53,9 @@ const Input: FC<Props> = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className={`${styled} ${className}`}
+      className={clsx(styled, className)}
     />
   );
 };
 
-export default Input;
+export { Input };
