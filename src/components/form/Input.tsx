@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { FC, Ref } from "react";
+import { CSSProperties, FC, Ref } from "react";
 
 interface Props {
   size?: "small" | "medium" | "large";
@@ -9,6 +9,7 @@ interface Props {
   value?: string;
   onChange?: () => void;
   placeholder?: string;
+  css?: CSSProperties;
   className?: string;
 }
 
@@ -20,6 +21,7 @@ const Input: FC<Props> = ({
   value,
   onChange,
   placeholder,
+  css,
   className,
 }) => {
   let styled = ["rounded-[.5rem] focus:outline-blue-400 shadow-sm"];
@@ -53,6 +55,7 @@ const Input: FC<Props> = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
+      style={css}
       className={clsx(styled, className)}
     />
   );
