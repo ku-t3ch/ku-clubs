@@ -38,7 +38,7 @@ const Button: FC<Props> = ({ size, color, outline, css, className, onClick, chil
   switch (color) {
     case "primary":
       if (!outline) {
-        styled.push("text-white bg-blue-400 hover:bg-blue-500 shadow-primary");
+        styled.push("text-white bg-blue-400 hover:bg-blue-500 primary-shadow");
       } else {
         styled.push(
           "text-blue-400 border-blue-400 hover:text-blue-500 hover:border-blue-500 bg-blue-50"
