@@ -10,7 +10,7 @@ interface Props {
   children: ReactNode;
 }
 
-const withNavbar: string[] = ["/", "/explore", "/add-club", "/my-clubs", "/my-account"];
+const withNavbar: string[] = ["/", "/explore", "/add-club", "/my-clubs", "/my-account", "/club/[id]"];
 
 export const NavbarContextProvider: NextPage<Props> = ({ children }) => {
   const { pathname } = useRouter();
