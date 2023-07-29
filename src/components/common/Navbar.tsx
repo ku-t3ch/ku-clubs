@@ -34,7 +34,7 @@ const navbarItems: NavItem[] = [
   },
   {
     label: "เพิ่มชมรม",
-    to: "/add-club",
+    to: "/club/add",
   },
   {
     label: "ชมรมของฉัน",
