@@ -2,16 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
     previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
     provider = "postgresql"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url      = env("DATABASE_URL")
 }
 
@@ -56,6 +52,9 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    like          Club?     @relation("ClubLikes", fields: [likeId], references: [id])
+    likeId        String?
+    myClubs       Club[]
 }
 
 model VerificationToken {
@@ -64,4 +63,61 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Campus {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String @unique
+    clubs     Club[]
+}
+
+model Club {
+    id        String     @id @default(cuid())
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+    name      String     @unique
+    detail    String
+    campus    Campus     @relation(fields: [campusId], references: [id])
+    campusId  String
+    type      ClubType[]
+    likes     User[]     @relation("ClubLikes")
+    views     Int        @default(0)
+    owner     User       @relation(fields: [ownerId], references: [id])
+    ownerId   String
+    logo      String
+    events    Event[]
+    posts     Post[]
+    approved  Boolean    @default(false)
+}
+
+model ClubType {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String   @unique
+    clubs     Club[]
+}
+
+model Event {
+    id     String   @id @default(cuid())
+    name   String
+    detail String
+    cover  String?
+    start  DateTime
+    end    DateTime
+    club   Club     @relation(fields: [clubId], references: [id])
+    clubId String
+}
+
+model Post {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    title     String
+    detail    String
+    club      Club     @relation(fields: [clubId], references: [id])
+    clubId    String
+    views     Int      @default(0)
 }
