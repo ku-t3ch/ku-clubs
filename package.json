@@ -5,7 +5,9 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "postinstall": "prisma generate",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "ts-node prisma/seed.ts",
     "lint": "next lint",
     "start": "next start"
   },
@@ -51,7 +53,8 @@
     "prettier-plugin-tailwindcss": "^0.2.8",
     "prisma": "^4.14.0",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "ts-node": "^10.9.1"
   },
   "ct3aMetadata": {
     "initVersion": "7.13.1"
