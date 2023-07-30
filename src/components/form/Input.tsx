@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { CSSProperties, FC, Ref } from "react";
+import { CSSProperties, ChangeEvent, FC, Ref } from "react";
 
 interface Props {
   size?: "small" | "medium" | "large";
@@ -7,10 +7,11 @@ interface Props {
   type: "text" | "password";
   ref?: Ref<HTMLInputElement>;
   value?: string;
-  onChange?: () => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   css?: CSSProperties;
   className?: string;
+  error?: string;
 }
 
 const Input: FC<Props> = ({
@@ -23,6 +24,7 @@ const Input: FC<Props> = ({
   placeholder,
   css,
   className,
+  error
 }) => {
   let styled = ["rounded-[.5rem] focus:outline-blue-400 shadow-sm"];
 
@@ -49,15 +51,18 @@ const Input: FC<Props> = ({
   }
 
   return (
-    <input
-      type={type}
-      ref={ref}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      style={css}
-      className={clsx(styled, className)}
-    />
+    <>
+      <input
+        type={type}
+        ref={ref}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        style={css}
+        className={clsx(styled, className)}
+      />
+      {error && <span className="text-red-500">{error}</span>}
+    </>
   );
 };
 

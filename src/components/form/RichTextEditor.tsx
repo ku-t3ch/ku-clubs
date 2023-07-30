@@ -6,12 +6,14 @@ import { useRef } from "react";
 interface Props {
   onChange?: (content: string) => void;
   initialValue?: string;
+  error?: string;
 }
 
-const RichTextEditor: NextPage<Props> = ({ onChange, initialValue }) => {
+const RichTextEditor: NextPage<Props> = ({ onChange, initialValue, error }) => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
   return (
     <>
+      {error && <span className="text-red-500">*{error}</span>}
       <Editor
         tinymceScriptSrc={"/tinymce/tinymce.min.js"}
         onInit={(evt, editor) => (editorRef.current = editor)}
