@@ -13,6 +13,7 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
+        console.log(token);
         if (token) {
           return true;
         }

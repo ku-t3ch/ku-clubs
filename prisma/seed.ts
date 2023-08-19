@@ -39,7 +39,7 @@ const main = async () => {
         logo: "https://tech.nisit.ku.ac.th/logo/KUTechWhite.png",
         campus: {
           connect: {
-            id: "clko0dkuc0000swi8z0k2tosh",
+            name: "วิทยาเขตบางเขน",
           },
         },
         owner: {
@@ -52,43 +52,41 @@ const main = async () => {
   }
 
   // init club type
-const isClubTypeExist = await prisma.clubType.findMany();
-if (isClubTypeExist.length === 0) {
-  await prisma.clubType.createMany({
-    data: [
-      {
-        name: "วิชาการ",
-      },
-      {
-        name: "วัฒนธรรม",
-      },
-      {
-        name: "ศิลปะ",
-      },
-      {
-        name: "กีฬา",
-      },
-      {
-        name: "สังคม",
-      },
-      {
-        name: "สิ่งแวดล้อม",
-      },
-      {
-        name: "สุขภาพ",
-      },
-      {
-        name: "เทคโนโลยี",
-      },
-      {
-        name: "อาชีพ",
-      },
-    ],
-  });
-}
+  const isClubTypeExist = await prisma.clubType.findMany();
+  if (isClubTypeExist.length === 0) {
+    await prisma.clubType.createMany({
+      data: [
+        {
+          name: "วิชาการ",
+        },
+        {
+          name: "วัฒนธรรม",
+        },
+        {
+          name: "ศิลปะ",
+        },
+        {
+          name: "กีฬา",
+        },
+        {
+          name: "สังคม",
+        },
+        {
+          name: "สิ่งแวดล้อม",
+        },
+        {
+          name: "สุขภาพ",
+        },
+        {
+          name: "เทคโนโลยี",
+        },
+        {
+          name: "อาชีพ",
+        },
+      ],
+    });
+  }
 };
-
-
 
 main()
   .then(async () => {

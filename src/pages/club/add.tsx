@@ -3,13 +3,13 @@ import { Input } from "@/components/form/Input";
 import Label from "@/components/form/Label";
 import RichTextEditor from "@/components/form/RichTextEditor";
 import Select from "@/components/form/Select";
+import UploadFile from "@/components/form/UploadFile";
 import { api } from "@/utils/api";
 import { Icon } from "@iconify/react";
-
 import { Form } from "antd";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { useLocalStorage } from "usehooks-ts";
+import toast from "react-hot-toast";
 
 interface FormBody {
   name: string;
@@ -24,13 +24,14 @@ interface Props {}
 const Add: NextPage<Props> = () => {
   const campusApi = api.campus.getAllCampuses.useQuery();
   const clubTypeApi = api.clubtype.getAllClubTypes.useQuery();
+  const addClubApi = api.club.addClub.useMutation();
   const [IsPreview, setIsPreview] = useState(false);
 
   const [FormBody, setFormBody] = useState<FormBody>({
     name: "",
     detail: "",
     campus: "",
-    clubType: "",
+    clubType: [],
     logo: "",
   } as FormBody);
 
@@ -42,10 +43,36 @@ const Add: NextPage<Props> = () => {
     logo: undefined as undefined | string,
   });
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    console.log(FormBody);
+
     if (checkIsError()) {
       return;
     }
+
+    let toastKey = toast.loading("กำลังบันทึกข้อมูล");
+
+    await addClubApi.mutateAsync(
+      {
+        name: FormBody.name,
+        detail: FormBody.detail,
+        campusId: FormBody.campus,
+        clubType: FormBody.clubType as string[],
+        logo: FormBody.logo,
+      },
+      {
+        onSuccess: () => {
+          toast.success("บันทึกข้อมูลสำเร็จ", {
+            id: toastKey,
+          });
+        },
+        onError: (err) => {
+          toast.error(err.message, {
+            id: toastKey,
+          });
+        },
+      }
+    );
     console.log("submit");
   };
 
@@ -139,10 +166,14 @@ const Add: NextPage<Props> = () => {
             className="relative flex w-full flex-col rounded-md border p-5"
           >
             <Form.Item label={<Label isRequire>รูปภาพชมรม</Label>}>
-              <Button onClick={() => console.log("sdf")} color="secondary" className="flex gap-1">
-                <Icon icon="mdi:upload" className="text-xl" />
-                Upload Logo
-              </Button>
+              <UploadFile
+                onUpload={(c) => {
+                  setFormBody((pre) => ({
+                    ...pre,
+                    logo: c[0] as string,
+                  }));
+                }}
+              />
             </Form.Item>
             <Form.Item label={<Label isRequire>ชื่อชมรม</Label>}>
               <Input
@@ -206,7 +237,7 @@ const Add: NextPage<Props> = () => {
               )}
             </Form.Item>
             <Form.Item>
-              <Button color="primary" size="large">
+              <Button color="primary" size="large" type="submit">
                 บันทึก
               </Button>
             </Form.Item>
