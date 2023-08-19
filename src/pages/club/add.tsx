@@ -65,6 +65,7 @@ const Add: NextPage<Props> = () => {
           toast.success("บันทึกข้อมูลสำเร็จ", {
             id: toastKey,
           });
+          clearForm();
         },
         onError: (err) => {
           toast.error(err.message, {
@@ -78,6 +79,24 @@ const Add: NextPage<Props> = () => {
 
   const onHandlePreview = () => {
     setIsPreview((pre) => !pre);
+  };
+
+  const clearForm = () => {
+    setFormBody({
+      name: "",
+      detail: "",
+      campus: "",
+      clubType: "",
+      logo: "",
+    });
+
+    setError({
+      name: undefined,
+      detail: undefined,
+      campus: undefined,
+      clubType: undefined,
+      logo: undefined,
+    });
   };
 
   const checkIsError = () => {
