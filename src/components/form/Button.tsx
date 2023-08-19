@@ -9,9 +9,10 @@ interface Props {
   css?: CSSProperties;
   onClick?: () => void;
   children?: ReactNode;
+  type?: "button" | "submit" | "reset";
 }
 
-const Button: FC<Props> = ({ size, color, outline, css, className, onClick, children }) => {
+const Button: FC<Props> = ({ size, color, outline, css, className, onClick, children, type }) => {
   let styled = ["font-semibold cursor-pointer transition-all duration-300 ease-out"];
 
   // size
@@ -58,7 +59,7 @@ const Button: FC<Props> = ({ size, color, outline, css, className, onClick, chil
   }
 
   return (
-    <button onClick={onClick} style={css} className={clsx(styled, className)}>
+    <button onClick={onClick} style={css} className={clsx(styled, className)} type={type}>
       {children}
     </button>
   );

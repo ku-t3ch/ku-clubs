@@ -10,8 +10,12 @@ import nprogress from "nprogress";
 import "nprogress/nprogress.css";
 import router from "next/router";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
-const MyApp: AppType<{ session: Session | null }> = ({ Component, pageProps: { session, ...pageProps } }) => {
+const MyApp: AppType<{ session: Session | null }> = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
   useEffect(() => {
     const handleRouteStart = () => nprogress.start();
     const handleRouteDone = () => nprogress.done();
@@ -31,6 +35,7 @@ const MyApp: AppType<{ session: Session | null }> = ({ Component, pageProps: { s
     <>
       <DefaultSeo {...SEO} />
       <SessionProvider session={session}>
+        <Toaster position="top-right" reverseOrder={false} />
         <NavbarContextProvider>
           <Component {...pageProps} />
         </NavbarContextProvider>

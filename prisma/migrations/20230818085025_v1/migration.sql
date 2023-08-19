@@ -138,6 +138,15 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Campus_name_key" ON "Campus"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Club_name_key" ON "Club"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ClubType_name_key" ON "ClubType"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_ClubToClubType_AB_unique" ON "_ClubToClubType"("A", "B");
 
 -- CreateIndex
