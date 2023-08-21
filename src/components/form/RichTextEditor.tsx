@@ -17,7 +17,7 @@ const RichTextEditor: NextPage<Props> = ({ onChange, initialValue, error }) => {
       <Editor
         tinymceScriptSrc={"/tinymce/tinymce.min.js"}
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue={initialValue}
+        value={initialValue}
         onEditorChange={(evt, editor) => onChange && onChange(editor.getContent())}
         init={{
           branding: false,

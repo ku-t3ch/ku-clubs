@@ -17,6 +17,7 @@ const withNavbar: string[] = [
   "/my-clubs",
   "/my-account",
   "/club/[id]",
+  "/club/edit/[id]",
   "/club/add",
 ];
 

@@ -13,6 +13,11 @@ interface Props {
   styles?: CSSObjectWithLabel;
   options: Array<Option>;
   error?: string;
+  value?:
+    | {
+        value: string;
+        label: string;
+      }[] | null;
 }
 
 const Select: NextPage<Props> = (props) => {
@@ -20,6 +25,7 @@ const Select: NextPage<Props> = (props) => {
     <>
       <ReactSelect
         options={props.options}
+        defaultValue={props.value}
         isMulti={props.isMulti || false}
         onChange={(e) => props.onChange && props.onChange(e as any)}
         className="z-10"

@@ -33,6 +33,7 @@
     "filepond-plugin-image-edit": "^1.6.3",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
     "filepond-plugin-image-preview": "^4.6.11",
+    "isomorphic-dompurify": "^1.8.0",
     "next": "^13.4.2",
     "next-auth": "^4.22.1",
     "next-seo": "^6.0.0",
@@ -51,6 +52,8 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
+    "@types/dompurify": "^3.0.2",
     "@types/eslint": "^8.37.0",
     "@types/node": "^18.16.0",
     "@types/nprogress": "^0.2.0",

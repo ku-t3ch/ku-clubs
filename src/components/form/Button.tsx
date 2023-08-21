@@ -1,4 +1,5 @@
 import { clsx } from "clsx";
+import Link from "next/link";
 import { CSSProperties, FC, ReactNode } from "react";
 
 interface Props {
@@ -10,9 +11,20 @@ interface Props {
   onClick?: () => void;
   children?: ReactNode;
   type?: "button" | "submit" | "reset";
+  href?: string;
 }
 
-const Button: FC<Props> = ({ size, color, outline, css, className, onClick, children, type }) => {
+const Button: FC<Props> = ({
+  size,
+  color,
+  outline,
+  css,
+  className,
+  onClick,
+  children,
+  type,
+  href,
+}) => {
   let styled = ["font-semibold cursor-pointer transition-all duration-300 ease-out"];
 
   // size
@@ -58,7 +70,11 @@ const Button: FC<Props> = ({ size, color, outline, css, className, onClick, chil
     default:
   }
 
-  return (
+  return href ? (
+    <Link href={href} style={css} className={clsx(styled, className)} type={type}>
+      {children}
+    </Link>
+  ) : (
     <button onClick={onClick} style={css} className={clsx(styled, className)} type={type}>
       {children}
     </button>
