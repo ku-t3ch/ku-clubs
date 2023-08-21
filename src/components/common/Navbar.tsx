@@ -33,10 +33,6 @@ const navbarItems: NavItem[] = [
     to: "/explore",
   },
   {
-    label: "เพิ่มชมรม",
-    to: "/club/add",
-  },
-  {
     label: "ชมรมของฉัน",
     to: "/my-clubs",
   },

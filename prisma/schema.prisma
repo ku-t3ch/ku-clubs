@@ -55,6 +55,7 @@ model User {
     like          Club?     @relation("ClubLikes", fields: [likeId], references: [id])
     likeId        String?
     myClubs       Club[]
+    editor        Club[]    @relation("ClubEditors")
 }
 
 model VerificationToken {
@@ -85,10 +86,12 @@ model Club {
     likes     User[]     @relation("ClubLikes")
     views     Int        @default(0)
     owner     User       @relation(fields: [ownerId], references: [id])
+    editor    User[]     @relation("ClubEditors")
     ownerId   String
     logo      String
     events    Event[]
     posts     Post[]
+    status    String     @default("pending") // pending, published, rejected
     approved  Boolean    @default(false)
 }
 
