@@ -30,7 +30,7 @@ const RichTextEditor: NextPage<Props> = ({ onChange, initialValue, error }) => {
           plugins:
             "autoresize autolink lists link image searchreplace fullscreen media table code codesample directionality",
           toolbar:
-            "blocks | alignleft aligncenter alignright  |" +
+            "blocks | removeformat | alignleft aligncenter alignright  |" +
             "bold italic underline strikethrough | bullist numlist | link table image media file |" +
             "removeformat fullscreen",
           content_style: "body { font-size: 16px }",
