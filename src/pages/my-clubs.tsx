@@ -4,19 +4,31 @@ import { api } from "@/utils/api";
 import { Icon } from "@iconify/react";
 import { Club } from "@prisma/client";
 import { NextPage } from "next";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Props {}
 
 const MyClubs: NextPage<Props> = () => {
   const getMyClubsApi = api.club.getMyClubs.useQuery();
+  const [searchKeyWord, setSearchKeyWord] = useState("");
   const [myClubs, setMyClubs] = useState<Club[]>([]);
 
-  useEffect(() => {
-    if (getMyClubsApi.data) {
-      setMyClubs(getMyClubsApi.data);
+  const searchClub = () => {
+    if (searchKeyWord.length > 0 && getMyClubsApi.data) {
+      setMyClubs(
+        getMyClubsApi.data.filter((club) => {
+          return club.name.toLocaleLowerCase().match(searchKeyWord.toLocaleLowerCase());
+        })
+      );
+    } else {
+      setMyClubs(getMyClubsApi.data!);
     }
-  }, [getMyClubsApi.data]);
+  };
+
+  useEffect(() => {
+    searchClub();
+  }, [searchKeyWord, getMyClubsApi.data]);
 
   return (
     <>
@@ -35,26 +47,49 @@ const MyClubs: NextPage<Props> = () => {
             </Button>
           </div>
           <div className="flex flex-col gap-3">
-            <Input placeholder="ค้นหาชมรม" type={"text"} />
+            <Input
+              placeholder="ค้นหาชมรม"
+              type={"text"}
+              onChange={(v) => {
+                setSearchKeyWord(v.target.value);
+              }}
+            />
             <div className="flex flex-col">
-              {myClubs.map((club, id) => (
-                <div className="flex items-center justify-between border-b pb-2" key={id}>
-                  <div className="flex gap-3 ">
-                    <img className="max-w-[5rem] rounded-2xl" src={club.logo} alt="" />
-                    <div className="flex flex-col justify-center">
-                      <div className="font-bold">{club.name}</div>
+              {myClubs
+                ? myClubs.map((club, id) => (
+                    <div className="flex items-center justify-between border-b py-2" key={id}>
+                      <div className="flex gap-3 ">
+                        <img className="max-w-[5rem] rounded-2xl" src={club.logo} alt="" />
+                        <div className="flex flex-col justify-center">
+                          <Link
+                            href={`/club/${club.id}`}
+                            className="font-bold hover:cursor-pointer hover:underline"
+                          >
+                            {club.name}
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          href={`/club/edit/${club.id}`}
+                          type="button"
+                          color="secondary"
+                          className="flex items-center gap-1"
+                        >
+                          แก้ไข
+                        </Button>
+                        <Button
+                          href={`/club/${club.id}`}
+                          type="button"
+                          color="primary"
+                          className="flex items-center gap-1"
+                        >
+                          ดู
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button href={`/club/edit/${club.id}`} type="button" color="secondary" className="flex items-center gap-1">
-                      แก้ไข
-                    </Button>
-                    <Button href={`/club/${club.id}`} type="button" color="primary" className="flex items-center gap-1">
-                      ดู
-                    </Button>
-                  </div>
-                </div>
-              ))}
+                  ))
+                : ""}
             </div>
           </div>
         </div>

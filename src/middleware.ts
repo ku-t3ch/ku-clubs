@@ -26,4 +26,5 @@ export default withAuth(
 export const config = { matcher: [
     "/club/add",
     "/my-clubs",
+    "/my-account",
 ] };
