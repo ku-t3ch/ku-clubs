@@ -91,7 +91,7 @@ model Club {
     logo      String
     events    Event[]
     posts     Post[]
-    status    String     @default("pending") // pending, published, rejected
+    isPublic  Boolean    @default(false)
     approved  Boolean    @default(false)
 }
 

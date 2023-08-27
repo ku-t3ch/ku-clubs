@@ -1,4 +1,4 @@
-import Band from "@/components/common/Band";
+import Band from "@/components/Common/Band";
 import LayoutNavbar from "@/layouts/WithNavbar";
 import { Icon } from "@iconify/react";
 import { NextPage } from "next";

@@ -1,4 +1,4 @@
-import Band from "@/components/common/Band";
+import Band from "@/components/Common/Band";
 import { Icon } from "@iconify/react";
 import { type NextPage } from "next";
 import Link from "next/link";

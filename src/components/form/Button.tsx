@@ -12,6 +12,7 @@ interface Props {
   children?: ReactNode;
   type?: "button" | "submit" | "reset";
   href?: string;
+  loading?: boolean;
 }
 
 const Button: FC<Props> = ({
@@ -24,6 +25,7 @@ const Button: FC<Props> = ({
   children,
   type,
   href,
+  loading,
 }) => {
   let styled = ["font-semibold cursor-pointer transition-all duration-300 ease-out"];
 
@@ -72,11 +74,11 @@ const Button: FC<Props> = ({
 
   return href ? (
     <Link href={href} style={css} className={clsx(styled, className)} type={type}>
-      {children}
+      {loading ? "loading..." : children}
     </Link>
   ) : (
     <button onClick={onClick} style={css} className={clsx(styled, className)} type={type}>
-      {children}
+      {loading ? "loading..." : children}
     </button>
   );
 };
