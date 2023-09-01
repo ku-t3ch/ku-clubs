@@ -7,6 +7,7 @@ import { env } from "@/env.mjs";
 import constraintImage from "@/utils/constraintImage";
 import { v4 as uuidv4 } from "uuid";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import _ from "lodash";
 
 export const clubRouter = createTRPCRouter({
   addClub: protectedProcedure
@@ -144,8 +145,8 @@ export const clubRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-        console.log(input);
-        
+      console.log(input);
+
       const owner = await prisma.club.findUnique({
         where: {
           id: input.id,
@@ -201,5 +202,57 @@ export const clubRouter = createTRPCRouter({
       });
 
       return "OK";
+    }),
+  settingEditor: protectedProcedure
+    .input(z.object({ id: z.string(), emailList: z.array(z.string()) }))
+    .mutation(async ({ input, ctx }) => {
+      const checkOwner = await ctx.prisma.club.findUnique({
+        where: {
+          id: input.id,
+        },
+        select: {
+          owner: {
+            select: {
+              email: true,
+            },
+          },
+          editor: true,
+        },
+      });
+
+      if (!checkOwner) {
+        throw new Error("you are not owner");
+      }
+
+      const allUser = await prisma.user.findMany();
+
+      const isIntersect = _.intersectionWith(
+        allUser.map((e) => e.email),
+        input.emailList,
+        _.isEqual
+      );
+
+      if (isIntersect.length !== input.emailList.length) {
+        const complement = _.differenceWith(
+          input.emailList,
+          allUser.map((e) => e.email),
+          _.isEqual
+        );
+        throw new Error(`[${complement.join(",")}] not found`);
+      }
+
+      const club = await ctx.prisma.club.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          editor: {
+            set: input.emailList.map((email) => ({
+              email,
+            })),
+          },
+        },
+      });
+      return club;
     }),
 });

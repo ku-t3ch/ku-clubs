@@ -93,6 +93,7 @@ model Club {
     posts     Post[]
     isPublic  Boolean    @default(false)
     approved  Boolean    @default(false)
+    showOnIndex Boolean  @default(true)
 }
 
 model ClubType {

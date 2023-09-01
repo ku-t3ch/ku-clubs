@@ -33,6 +33,17 @@ export async function getServerSideProps(ctx: NextPageContext) {
         },
       },
       type: true,
+      owner: {
+        select: {
+          id: true,
+          email: true,
+        },
+      },
+      editor: {
+        select: {
+          email: true,
+        },
+      },
     },
   });
 
@@ -46,15 +57,20 @@ export async function getServerSideProps(ctx: NextPageContext) {
 
 interface Props {
   id: string | null;
-  clubData:
-    | (Club & {
-        campus: Campus;
-        type: ClubType[];
-        likes: {
-          likeId: string | null;
-        }[];
-      })
-    | null;
+  clubData:(Club & {
+    campus: Campus;
+    type: ClubType[];
+    likes: {
+        likeId: string | null;
+    }[];
+    owner: {
+        id: string;
+        email: string | null;
+    };
+    editor: {
+        email: string | null;
+    }[];
+}) | null;
 }
 
 const Add: NextPage<Props> = ({ id, clubData }) => {
@@ -122,7 +138,7 @@ const Add: NextPage<Props> = ({ id, clubData }) => {
               {
                 key: "3",
                 label: "ตั้งค่า",
-                children: <EditClubSetting clubData={clubData} id={id} />
+                children: <EditClubSetting clubData={clubData} id={id} />,
               },
             ]}
           />

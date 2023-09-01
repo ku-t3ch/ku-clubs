@@ -57,8 +57,7 @@ interface Props {
 }
 
 const Club: NextPage<Props> = ({ clubData }) => {
-  console.log(clubData?.likes.length);
-
+    
   if (clubData === null) {
     return <ClubNotFound />;
   }
