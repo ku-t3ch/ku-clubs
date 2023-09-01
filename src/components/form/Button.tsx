@@ -4,7 +4,7 @@ import { CSSProperties, FC, ReactNode } from "react";
 
 interface Props {
   size?: "small" | "medium" | "large";
-  color?: "primary" | "secondary";
+  color?: "primary" | "secondary" | "error";
   outline?: boolean;
   className?: string;
   css?: CSSProperties;
@@ -66,6 +66,15 @@ const Button: FC<Props> = ({
       } else {
         styled.push(
           "text-gray-400 border-gray-400 hover:text-gray-500 hover:border-gray-500 bg-gray-50"
+        );
+      }
+      break;
+    case "error":
+      if (!outline) {
+        styled.push("text-white bg-red-500 hover:bg-red-600 ");
+      } else {
+        styled.push(
+          "text-red-500 border-red-500 hover:text-red-600 hover:border-red-600 bg-red-50"
         );
       }
       break;

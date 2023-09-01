@@ -12,6 +12,7 @@ interface Props {
   css?: CSSProperties;
   className?: string;
   error?: string;
+  disabled?: boolean;
 }
 
 const Input: FC<Props> = ({
@@ -24,7 +25,8 @@ const Input: FC<Props> = ({
   placeholder,
   css,
   className,
-  error
+  error,
+  disabled,
 }) => {
   let styled = ["rounded-[.5rem] focus:outline-blue-400 shadow-sm"];
 
@@ -60,6 +62,7 @@ const Input: FC<Props> = ({
         placeholder={placeholder}
         style={css}
         className={clsx(styled, className)}
+        disabled={disabled}
       />
       {error && <span className="text-red-500">{error}</span>}
     </>
