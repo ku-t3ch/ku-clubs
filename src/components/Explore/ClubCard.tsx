@@ -4,13 +4,14 @@ import Link from "next/link";
 
 interface Props {
   data: {
-    logo: string;
-    name: string;
-    id: string;
     campus: {
       name: string;
     };
+    name: string;
+    logo: string;
+    id: string;
     views: number;
+    likes: number;
   };
 }
 
@@ -22,7 +23,7 @@ const ClubCard: NextPage<Props> = ({ data }) => {
         <div className="flex flex-col">
           <div className="font-bold">{data.name}</div>
           <div>
-            <Stat size="sm" location={data.campus.name} />
+            <Stat size="sm" location={data.campus.name} views={data.views} likes={data.likes} />
           </div>
         </div>
       </div>

@@ -28,10 +28,15 @@ export const clubRouter = createTRPCRouter({
             name: true,
           },
         },
+        likes: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
-    return clubs;
+    return clubs.map((club) => ({ ...club, likes: club.likes.length }));
   }),
   addClub: protectedProcedure
     .input(
@@ -319,4 +324,64 @@ export const clubRouter = createTRPCRouter({
       });
       return club;
     }),
+  likeClub: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const isLiked = await prisma.club.findUnique({
+        where: {
+          id: input.id,
+        },
+        select: {
+          likes: {
+            where: {
+              email: ctx.session.user.email!,
+            },
+          },
+        },
+      });
+
+      if (isLiked?.likes.length !== 0) {
+        await prisma.club.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            likes: {
+              disconnect: {
+                email: ctx.session.user.email!,
+              },
+            },
+          },
+        });
+      } else {
+        await prisma.club.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            likes: {
+              connect: {
+                email: ctx.session.user.email!,
+              },
+            },
+          },
+        });
+      }
+    }),
+  getLikeAmount: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    const club = await prisma.club.findUnique({
+      where: {
+        id: input,
+      },
+      select: {
+        likes: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    return club?.likes.length;
+  }),
 });

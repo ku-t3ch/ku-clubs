@@ -5,9 +5,12 @@ import { prisma } from "@/server/db";
 import { Campus, Club } from "@prisma/client";
 import { sanitize } from "isomorphic-dompurify";
 import { NextPage, NextPageContext } from "next";
+import { getToken } from "next-auth/jwt";
 
 export async function getServerSideProps(ctx: NextPageContext) {
   const { id } = ctx.query;
+
+  const token = await getToken({ req: ctx.req as any, secret: process.env.SECRET });
 
   const clubData = await prisma.club.findUnique({
     where: {
@@ -17,7 +20,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       campus: true,
       likes: {
         select: {
-          likeId: true,
+          id: true,
         },
       },
     },
@@ -41,6 +44,9 @@ export async function getServerSideProps(ctx: NextPageContext) {
       props: {
         id,
         clubData: JSON.parse(JSON.stringify(clubData)) || null,
+        clicked: token
+          ? clubData?.likes.filter((user) => user.id! === token?.sub).length > 0
+          : false,
       },
     };
   } else {
@@ -48,6 +54,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       props: {
         id,
         clubData: null,
+        click: false,
       },
     };
   }
@@ -59,13 +66,14 @@ interface Props {
     | (Club & {
         campus: Campus;
         likes: {
-          likeId: string | null;
+          id: string;
         }[];
       })
     | null;
+  clicked: boolean;
 }
 
-const Club: NextPage<Props> = ({ clubData }) => {
+const Club: NextPage<Props> = ({ clubData, clicked }) => {
   if (clubData === null) {
     return <ClubNotFound />;
   }
@@ -87,6 +95,8 @@ const Club: NextPage<Props> = ({ clubData }) => {
             <div className="text-2xl font-bold md:text-4xl">{clubData.name}</div>
             <Stat
               {...{
+                clicked: clicked,
+                clubData: clubData,
                 likes: clubData.likes.length,
                 views: clubData.views,
                 location: clubData.campus.name,
