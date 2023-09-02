@@ -44,8 +44,6 @@ const Add: NextPage<Props> = () => {
   });
 
   const onSubmit = async () => {
-    console.log(FormBody);
-
     if (checkIsError()) {
       return;
     }
@@ -74,7 +72,6 @@ const Add: NextPage<Props> = () => {
         },
       }
     );
-    console.log("submit");
   };
 
   const onHandlePreview = () => {

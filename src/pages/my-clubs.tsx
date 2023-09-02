@@ -3,7 +3,9 @@ import { Input } from "@/components/form/Input";
 import { api } from "@/utils/api";
 import { Icon } from "@iconify/react";
 import { Club } from "@prisma/client";
+import { Badge } from "antd";
 import { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -13,6 +15,7 @@ const MyClubs: NextPage<Props> = () => {
   const getMyClubsApi = api.club.getMyClubs.useQuery();
   const [searchKeyWord, setSearchKeyWord] = useState("");
   const [myClubs, setMyClubs] = useState<Club[]>([]);
+  const { data: session } = useSession();
 
   const searchClub = () => {
     if (searchKeyWord.length > 0 && getMyClubsApi.data) {
@@ -65,7 +68,16 @@ const MyClubs: NextPage<Props> = () => {
                             href={`/club/${club.id}`}
                             className="font-bold hover:cursor-pointer hover:underline"
                           >
-                            {club.name}
+                            {club.name}{" "}
+                            {session?.user.id === club.ownerId && (
+                              <>
+                                {club.approved ? (
+                                  <Badge count={"ตรวจสอบแล้ว"} showZero color="#02a83c" />
+                                ) : (
+                                  <Badge count={"รอการตรวจสอบ"} showZero color="#e8b600" />
+                                )}
+                              </>
+                            )}
                           </Link>
                         </div>
                       </div>

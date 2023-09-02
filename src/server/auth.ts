@@ -4,12 +4,20 @@ import { getServerSession, type NextAuthOptions, type DefaultSession } from "nex
 import GoogleProvider from "next-auth/providers/google";
 import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
+import { DefaultJWT } from "next-auth/jwt";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      isAdmin: boolean;
     } & DefaultSession["user"];
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT extends DefaultJWT {
+    isAdmin: boolean;
   }
 }
 
@@ -18,12 +26,30 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    session({ session, token }) {
+    async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;
+        session.user.isAdmin = token.isAdmin;
+      }
+      return session;
+    },
+    async jwt({ token, user, profile }) {
+      const userData = await prisma.user.findUnique({
+        where: {
+          email: token.email!,
+        },
+      });
+
+      if (userData === null) {
+        return {
+          ...token,
+        };
       }
 
-      return session;
+      return {
+        ...userData,
+        ...token,
+      };
     },
   },
   adapter: PrismaAdapter(prisma),

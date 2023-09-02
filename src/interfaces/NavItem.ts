@@ -6,6 +6,8 @@ export interface NavItem {
   onlyNotRegistered?: boolean;
   dropdownItems?: DropdownItem[];
   newTab?: boolean;
+  onlyAdmin?: boolean;
+  protected?: boolean;
 }
 
 export interface DropdownItem {

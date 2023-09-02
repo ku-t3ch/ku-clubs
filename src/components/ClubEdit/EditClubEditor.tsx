@@ -2,7 +2,6 @@ import { Campus, Club, ClubType } from "@prisma/client";
 import { NextPage } from "next";
 import { Button } from "../form/Button";
 import { Form } from "antd";
-import Select from "../form/Select";
 import { Input } from "../form/Input";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
@@ -104,7 +103,6 @@ const EditClubEditor: NextPage<Props> = ({ clubData }) => {
                       }}
                       type={"text"}
                     />
-
                     <Button onClick={() => handleDeleteEmail(email.id)} type="button" color="error">
                       ลบ
                     </Button>
@@ -115,10 +113,11 @@ const EditClubEditor: NextPage<Props> = ({ clubData }) => {
                     <Input value={email.email} disabled type={"text"} />
                   </div>
                 ))}
-
-            <Button onClick={handleAddEmail} type="button" color="secondary" className="w-fit">
-              เพิ่ม
-            </Button>
+            {isOwner && (
+              <Button onClick={handleAddEmail} type="button" color="secondary" className="w-fit">
+                เพิ่ม
+              </Button>
+            )}
           </div>
         </Form.Item>
       </Form>

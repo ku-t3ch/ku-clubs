@@ -56,6 +56,7 @@ model User {
     likeId        String?
     myClubs       Club[]
     editor        Club[]    @relation("ClubEditors")
+    isAdmin       Boolean   @default(false)
 }
 
 model VerificationToken {
@@ -70,30 +71,30 @@ model Campus {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    name      String @unique
+    name      String   @unique
     clubs     Club[]
 }
 
 model Club {
-    id        String     @id @default(cuid())
-    createdAt DateTime   @default(now())
-    updatedAt DateTime   @updatedAt
-    name      String     @unique
-    detail    String
-    campus    Campus     @relation(fields: [campusId], references: [id])
-    campusId  String
-    type      ClubType[]
-    likes     User[]     @relation("ClubLikes")
-    views     Int        @default(0)
-    owner     User       @relation(fields: [ownerId], references: [id])
-    editor    User[]     @relation("ClubEditors")
-    ownerId   String
-    logo      String
-    events    Event[]
-    posts     Post[]
-    isPublic  Boolean    @default(false)
-    approved  Boolean    @default(false)
-    showOnIndex Boolean  @default(true)
+    id          String     @id @default(cuid())
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+    name        String     @unique
+    detail      String
+    campus      Campus     @relation(fields: [campusId], references: [id])
+    campusId    String
+    type        ClubType[]
+    likes       User[]     @relation("ClubLikes")
+    views       Int        @default(0)
+    owner       User       @relation(fields: [ownerId], references: [id])
+    editor      User[]     @relation("ClubEditors")
+    ownerId     String
+    logo        String
+    events      Event[]
+    posts       Post[]
+    isPublic    Boolean    @default(true)
+    approved    Boolean    @default(false)
+    showOnIndex Boolean    @default(true)
 }
 
 model ClubType {

@@ -235,11 +235,6 @@ const EditClubDetail: NextPage<Props> = ({ clubData, id }) => {
                 setFormBody((pre) => ({
                   ...pre,
                   clubType: e.map((c: any) => {
-                    console.log({
-                      value: c.value,
-                      label: c.label,
-                    });
-
                     return {
                       value: c.value,
                       label: c.label,

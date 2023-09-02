@@ -6,13 +6,14 @@ import clsx from "clsx";
 
 interface Props {
   className?: string;
+  href?: string;
 }
 
-const BackButton: NextPage<Props> = ({ className }) => {
-  const { back } = useRouter();
+const BackButton: NextPage<Props> = ({ className, href }) => {
+  const { back, push } = useRouter();
   return (
     <Button
-      onClick={() => back()}
+      onClick={() => (!href ? back() : push(href))}
       className={clsx("flex w-fit gap-1", className)}
       color="secondary"
     >

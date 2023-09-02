@@ -35,6 +35,13 @@ const navbarItems: NavItem[] = [
   {
     label: "ชมรมของฉัน",
     to: "/my-clubs",
+    protected: true,
+  },
+  {
+    label: "Admin",
+    to: "/admin",
+    onlyAdmin: true,
+    protected: true,
   },
 ];
 
@@ -63,11 +70,27 @@ const Navbar: NextPage<Props> = () => {
           <Band />
           <div className="flex items-center gap-10">
             <div className="flex space-x-8">
-              {navbarItems.map((item, id) => (
-                <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
-                  {item.label}
-                </MenuWithLink>
-              ))}
+              {navbarItems.map((item, id) =>
+                !item.protected && !item.onlyAdmin ? (
+                  <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
+                    {item.label}
+                  </MenuWithLink>
+                ) : null
+              )}
+              {navbarItems.map((item, id) =>
+                item.protected && !item.onlyAdmin ? (
+                  <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
+                    {item.label}
+                  </MenuWithLink>
+                ) : null
+              )}
+              {navbarItems.map((item, id) =>
+                item.protected && item.onlyAdmin && session?.user.isAdmin ? (
+                  <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
+                    {item.label}
+                  </MenuWithLink>
+                ) : null
+              )}
             </div>
             {status === "authenticated" ? (
               <div className="dropdown">

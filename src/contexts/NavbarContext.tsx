@@ -19,6 +19,8 @@ const withNavbar: string[] = [
   "/club/[id]",
   "/club/edit/[id]",
   "/club/add",
+  "/admin",
+  "/404"
 ];
 
 export const NavbarContextProvider: NextPage<Props> = ({ children }) => {
