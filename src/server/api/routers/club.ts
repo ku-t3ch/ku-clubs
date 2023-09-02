@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import { prisma } from "@/server/db";
 import s3 from "@/services/s3";
 import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
@@ -8,8 +8,31 @@ import constraintImage from "@/utils/constraintImage";
 import { v4 as uuidv4 } from "uuid";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import _ from "lodash";
+import checkCanEdit from "@/utils/checkCanEdit";
 
 export const clubRouter = createTRPCRouter({
+  getAllClubs: publicProcedure.query(async () => {
+    const clubs = await prisma.club.findMany({
+      where: {
+        isPublic: true,
+        approved: true,
+        showOnIndex: true,
+      },
+      select: {
+        name: true,
+        logo: true,
+        views: true,
+        id: true,
+        campus: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    return clubs;
+  }),
   addClub: protectedProcedure
     .input(
       z.object({
@@ -83,13 +106,25 @@ export const clubRouter = createTRPCRouter({
       }
     }),
   getMyClubs: protectedProcedure.query(async ({ ctx }) => {
-    const clubs = await prisma.club.findMany({
+    let clubs = await prisma.club.findMany({
       where: {
         owner: {
           email: ctx.session.user.email!,
         },
       },
     });
+    clubs = [
+      ...clubs,
+      ...(await prisma.club.findMany({
+        where: {
+          editor: {
+            some: {
+              email: ctx.session.user.email!,
+            },
+          },
+        },
+      })),
+    ];
 
     return clubs;
   }),
@@ -145,8 +180,6 @@ export const clubRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      console.log(input);
-
       const owner = await prisma.club.findUnique({
         where: {
           id: input.id,
@@ -165,8 +198,8 @@ export const clubRouter = createTRPCRouter({
         throw new Error("Club not found");
       }
 
-      if (owner?.owner.email !== ctx.session.user.email) {
-        throw new Error("You are not owner");
+      if (!(await checkCanEdit(input.id, ctx.session.user.email!))) {
+        throw new Error("You can't edit this club");
       }
 
       const clubBucket = env.S3_ENV_TYPE === "development" ? "ku-clubs-development" : "ku-clubs";
@@ -251,6 +284,37 @@ export const clubRouter = createTRPCRouter({
               email,
             })),
           },
+        },
+      });
+      return club;
+    }),
+  settingClub: protectedProcedure
+    .input(z.object({ id: z.string(), isPublic: z.boolean(), showOnIndex: z.boolean() }))
+    .mutation(async ({ input, ctx }) => {
+      const checkOwner = await ctx.prisma.club.findUnique({
+        where: {
+          id: input.id,
+        },
+        select: {
+          owner: {
+            select: {
+              email: true,
+            },
+          },
+        },
+      });
+
+      if (!checkOwner) {
+        throw new Error("you are not owner");
+      }
+
+      const club = await ctx.prisma.club.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          isPublic: input.isPublic,
+          showOnIndex: input.showOnIndex,
         },
       });
       return club;

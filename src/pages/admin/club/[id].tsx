@@ -23,34 +23,12 @@ export async function getServerSideProps(ctx: NextPageContext) {
     },
   });
 
-  if (clubData) {
-    await prisma.club.update({
-      where: {
-        id: id as string,
-      },
-      data: {
-        views: {
-          increment: 1,
-        },
-      },
-    });
-  }
-
-  if (clubData?.approved && clubData.isPublic) {
-    return {
-      props: {
-        id,
-        clubData: JSON.parse(JSON.stringify(clubData)) || null,
-      },
-    };
-  } else {
-    return {
-      props: {
-        id,
-        clubData: null,
-      },
-    };
-  }
+  return {
+    props: {
+      id,
+      clubData: JSON.parse(JSON.stringify(clubData)) || null,
+    },
+  };
 }
 
 interface Props {

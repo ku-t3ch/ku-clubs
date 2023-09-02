@@ -31,3 +31,7 @@
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+.ant-switch {
+    background-color: #00000040;
+}
