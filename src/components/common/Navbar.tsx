@@ -78,7 +78,7 @@ const Navbar: NextPage<Props> = () => {
                 ) : null
               )}
               {navbarItems.map((item, id) =>
-                item.protected && !item.onlyAdmin ? (
+                item.protected && !item.onlyAdmin && status === "authenticated" ? (
                   <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
                     {item.label}
                   </MenuWithLink>

@@ -18,7 +18,7 @@ interface Props {
 const ClubCard: NextPage<Props> = ({ data }) => {
   return (
     <Link href={`/club/${data.id}`}>
-      <div className="flex max-w-[350px] cursor-pointer gap-3 rounded-[5px] border border-gray-300 p-4 hover:bg-gray-50">
+      <div className="flex w-[350px] cursor-pointer gap-3 rounded-[5px] border border-gray-300 p-4 hover:bg-gray-50">
         <img className="h-[75px] w-[75px] rounded-2xl" src={data.logo} alt="" />
         <div className="flex flex-col">
           <div className="font-bold">{data.name}</div>

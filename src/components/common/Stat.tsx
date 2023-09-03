@@ -107,10 +107,10 @@ const Stat: NextPage<Props> = ({ likes, views, location, size, clubData, clicked
         </div>
       )}
 
-      <div className="flex items-center">
+      {/* <div className="flex items-center">
         <Icon icon="ph:eye" className={clsx(sizeIcon)} />
         <div className={clsx(font, "ml-1")}>{views || 0} views</div>
-      </div>
+      </div> */}
       {location && (
         <div className="flex place-items-center">
           <Icon icon="carbon:location" className={clsx(sizeIcon)} />

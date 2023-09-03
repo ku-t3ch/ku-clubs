@@ -1,11 +1,12 @@
-import Band from "@/components/Common/Band";
+
+import Band from "@/components/common/Band";
 import { Icon } from "@iconify/react";
 import { type NextPage } from "next";
 import Link from "next/link";
 
 const Home: NextPage = () => {
   const title = "คุณกำลังมองหา ชมรมอยู่ใช่ไหม";
-  const description = "เว็บเราคือแหล่งรวบรวมชมรมต่างๆ ในมหาวิทยาลัยเกษตรศาสต์ ทุกวิทเขต เพื่อนๆ ทุกคนสามารถค้นหาชมรมที่โดนใจได้";
+  const description = "เว็บเราคือแหล่งรวบรวมชมรมต่าง ๆ ในมหาวิทยาลัยเกษตรศาสต์ ทุกวิทยาเขต เพื่อน ๆ ทุกคนสามารถค้นหาชมรมที่โดนใจได้";
 
   return (
     <div>

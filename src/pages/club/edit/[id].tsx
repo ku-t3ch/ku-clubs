@@ -4,22 +4,16 @@ import EditClubSetting from "@/components/ClubEdit/EditClubSetting";
 import BackButton from "@/components/common/BackButton";
 import ClubNotFound from "@/components/common/ClubNotFound";
 import { Button } from "@/components/form/Button";
-import { Input } from "@/components/form/Input";
-import Label from "@/components/form/Label";
-import RichTextEditor from "@/components/form/RichTextEditor";
-import Select from "@/components/form/Select";
-import UploadFile from "@/components/form/UploadFile";
 import { prisma } from "@/server/db";
 import { api } from "@/utils/api";
 import checkCanEdit from "@/utils/checkCanEdit";
-import { Icon } from "@iconify/react";
 import { Campus, Club, ClubType } from "@prisma/client";
-import { Form, Tabs } from "antd";
+import { Tabs } from "antd";
 import { NextPage, NextPageContext } from "next";
 import { getToken } from "next-auth/jwt";
 import { useSession } from "next-auth/react";
 import { NextRequest } from "next/server";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 export async function getServerSideProps(ctx: NextPageContext) {
@@ -61,7 +55,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   return {
     props: {
       id,
-      clubData: checkCanEditBoolean ? (JSON.parse(JSON.stringify(clubData)) || null) : null,
+      clubData: checkCanEditBoolean ? JSON.parse(JSON.stringify(clubData)) || null : null,
     },
   };
 }
@@ -87,14 +81,13 @@ interface Props {
 }
 
 const Add: NextPage<Props> = ({ id, clubData }) => {
+  const { data: session } = useSession();
+  
   if (!clubData) {
     return <ClubNotFound />;
   }
 
-  const { data: session } = useSession();
-
   const deleteClubApi = api.club.deleteClub.useMutation();
-  const [IsPreview, setIsPreview] = useState(false);
 
   const onDelete = async () => {
     let toastKey = toast.loading("กำลังลบข้อมูล");
