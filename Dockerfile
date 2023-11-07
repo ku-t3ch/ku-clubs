@@ -32,9 +32,9 @@ COPY . .
 ENV SKIP_ENV_VALIDATION=1
 
 RUN \
- if [ -f yarn.lock ]; then SKIP_ENV_VALIDATION=1 yarn prisma:generate && yarn lint && yarn build; \
- elif [ -f package-lock.json ]; then SKIP_ENV_VALIDATION=1 npm run prisma:generate && npm run lint && npm run build; \
- elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && SKIP_ENV_VALIDATION=1 pnpm prisma:generate && pnpm lint && pnpm run build; \
+ if [ -f yarn.lock ]; then SKIP_ENV_VALIDATION=1 yarn db:generate && yarn lint && yarn build; \
+ elif [ -f package-lock.json ]; then SKIP_ENV_VALIDATION=1 npm run db:generate && npm run lint && npm run build; \
+ elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && SKIP_ENV_VALIDATION=1 pnpm db:generate && pnpm lint && pnpm run build; \
  else echo "Lockfile not found." && exit 1; \
  fi
 
