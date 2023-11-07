@@ -2,7 +2,7 @@ import { env } from "@/env.mjs";
 import { S3Client } from "@aws-sdk/client-s3";
 import { S3Interface } from "./S3Interface";
 
-let S3_ENV = JSON.parse(env.S3) as S3Interface;
+const S3_ENV = JSON.parse(env.S3) as S3Interface;
 
 const s3 = new S3Client({
   credentials: {

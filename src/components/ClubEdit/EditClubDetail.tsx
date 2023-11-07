@@ -80,7 +80,7 @@ const EditClubDetail: NextPage<Props> = ({ clubData, id }) => {
       return;
     }
 
-    let toastKey = toast.loading("กำลังบันทึกข้อมูล");
+    const toastKey = toast.loading("กำลังบันทึกข้อมูล");
 
     await updateClub.mutateAsync(
       {

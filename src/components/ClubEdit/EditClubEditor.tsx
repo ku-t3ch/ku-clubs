@@ -54,10 +54,13 @@ const EditClubEditor: NextPage<Props> = ({ clubData }) => {
   const isOwner = session?.user.email === clubData?.owner.email;
 
   const handleSave = async () => {
-    let notiId = toast.loading("กำลังบันทึกข้อมูล");
+    if (!clubData) {
+      return;
+    }
+    const notiId = toast.loading("กำลังบันทึกข้อมูล");
     await clubEditorSettingApi.mutate(
       {
-        id: clubData?.id!,
+        id: clubData?.id,
         emailList: EmailList.map((e) => e.email),
       },
       {
