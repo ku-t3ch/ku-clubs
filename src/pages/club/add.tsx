@@ -8,6 +8,7 @@ import { api } from "@/utils/api";
 import { Icon } from "@iconify/react";
 import { Form } from "antd";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -26,6 +27,7 @@ const Add: NextPage<Props> = () => {
   const clubTypeApi = api.clubtype.getAllClubTypes.useQuery();
   const addClubApi = api.club.addClub.useMutation();
   const [IsPreview, setIsPreview] = useState(false);
+  const { push } = useRouter();
 
   const [FormBody, setFormBody] = useState<FormBody>({
     name: "",
@@ -64,6 +66,7 @@ const Add: NextPage<Props> = () => {
             id: toastKey,
           });
           clearForm();
+          push("/my-clubs");
         },
         onError: (err) => {
           toast.error(err.message, {
@@ -151,7 +154,7 @@ const Add: NextPage<Props> = () => {
       <div className="mx-auto flex max-w-6xl flex-col gap-5 px-3 py-3">
         <div className="flex items-center justify-between">
           <div className="text-3xl font-bold">เพิ่มชมรม</div>
-          <div className="flex gap-1">
+          {/* <div className="flex gap-1">
             <Button
               onClick={onHandlePreview}
               color="secondary"
@@ -173,7 +176,7 @@ const Add: NextPage<Props> = () => {
             <Button color="secondary" size="medium" className="flex items-center gap-2">
               Save Draft
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className="flex gap-5">
           <Form

@@ -134,7 +134,7 @@ const Navbar: NextPage<Props> = () => {
         <div className="absolute bottom-0 left-0 right-0 top-[4rem] z-20 flex justify-center bg-white md:hidden">
           <div className="flex flex-col items-center gap-10">
             <Band />
-            {navbarItems.map((item, id) => (
+            {/* {navbarItems.map((item, id) => (
               <MenuWithLink
                 href={item.to}
                 key={id}
@@ -143,7 +143,43 @@ const Navbar: NextPage<Props> = () => {
               >
                 {item.label}
               </MenuWithLink>
-            ))}
+            ))} */}
+            {navbarItems.map((item, id) =>
+              !item.protected && !item.onlyAdmin ? (
+                <MenuWithLink
+                  href={item.to}
+                  key={id}
+                  className={"font-bold"}
+                  $active={isNavbarItemActive(item.to)}
+                >
+                  {item.label}
+                </MenuWithLink>
+              ) : null
+            )}
+            {navbarItems.map((item, id) =>
+              item.protected && !item.onlyAdmin && status === "authenticated" ? (
+                <MenuWithLink
+                  href={item.to}
+                  key={id}
+                  className={"font-bold"}
+                  $active={isNavbarItemActive(item.to)}
+                >
+                  {item.label}
+                </MenuWithLink>
+              ) : null
+            )}
+            {navbarItems.map((item, id) =>
+              item.protected && item.onlyAdmin && session?.user.isAdmin ? (
+                <MenuWithLink
+                  href={item.to}
+                  key={id}
+                  className={"font-bold"}
+                  $active={isNavbarItemActive(item.to)}
+                >
+                  {item.label}
+                </MenuWithLink>
+              ) : null
+            )}
             {status === "authenticated" ? (
               <>
                 <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>

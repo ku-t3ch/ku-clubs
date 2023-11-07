@@ -8,7 +8,7 @@ import { prisma } from "@/server/db";
 import { api } from "@/utils/api";
 import checkCanEdit from "@/utils/checkCanEdit";
 import { Campus, Club, ClubType } from "@prisma/client";
-import { Tabs } from "antd";
+import { Modal, Tabs } from "antd";
 import { NextPage, NextPageContext } from "next";
 import { getToken } from "next-auth/jwt";
 import { useSession } from "next-auth/react";
@@ -82,7 +82,7 @@ interface Props {
 
 const Add: NextPage<Props> = ({ id, clubData }) => {
   const { data: session } = useSession();
-  
+
   if (!clubData) {
     return <ClubNotFound />;
   }
@@ -90,22 +90,29 @@ const Add: NextPage<Props> = ({ id, clubData }) => {
   const deleteClubApi = api.club.deleteClub.useMutation();
 
   const onDelete = async () => {
-    let toastKey = toast.loading("กำลังลบข้อมูล");
-
-    await deleteClubApi.mutateAsync(clubData.id, {
-      onSuccess: () => {
-        toast.success("ลบข้อมูลสำเร็จ", {
-          id: toastKey,
+    Modal.confirm({
+      title: "ยืนยันการลบชมรม",
+      content: "คุณต้องการลบชมรมนี้ใช่หรือไม่",
+      okText: "ยืนยัน",
+      cancelText: "ยกเลิก",
+      onOk: async () => {
+        let toastKey = toast.loading("กำลังลบข้อมูล");
+        await deleteClubApi.mutateAsync(clubData.id, {
+          onSuccess: () => {
+            toast.success("ลบข้อมูลสำเร็จ", {
+              id: toastKey,
+            });
+            window.location.href = "/my-clubs";
+          },
+          onError: (err) => {
+            toast.error(err.message, {
+              id: toastKey,
+            });
+          },
         });
         window.location.href = "/my-clubs";
       },
-      onError: (err) => {
-        toast.error(err.message, {
-          id: toastKey,
-        });
-      },
     });
-    window.location.href = "/my-clubs";
   };
 
   const TabList = [

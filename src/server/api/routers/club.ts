@@ -11,33 +11,43 @@ import _ from "lodash";
 import checkCanEdit from "@/utils/checkCanEdit";
 
 export const clubRouter = createTRPCRouter({
-  getAllClubs: publicProcedure.query(async () => {
-    const clubs = await prisma.club.findMany({
-      where: {
-        isPublic: true,
-        approved: true,
-        showOnIndex: true,
-      },
-      select: {
-        name: true,
-        logo: true,
-        views: true,
-        id: true,
-        campus: {
-          select: {
-            name: true,
+  getAllClubs: publicProcedure
+    .input(z.object({ search: z.string().optional() }).optional())
+    .query(async ({ input }) => {
+      const clubs = await prisma.club.findMany({
+        where: {
+          isPublic: true,
+          approved: true,
+          showOnIndex: true,
+          OR: [
+            {
+              name: {
+                contains: input?.search ? input?.search : "",
+                mode: "insensitive",
+              },
+            },
+          ],
+        },
+        select: {
+          name: true,
+          logo: true,
+          views: true,
+          id: true,
+          campus: {
+            select: {
+              name: true,
+            },
+          },
+          likes: {
+            select: {
+              id: true,
+            },
           },
         },
-        likes: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
+      });
 
-    return clubs.map((club) => ({ ...club, likes: club.likes.length }));
-  }),
+      return clubs.map((club) => ({ ...club, likes: club.likes.length }));
+    }),
   addClub: protectedProcedure
     .input(
       z.object({
@@ -211,35 +221,40 @@ export const clubRouter = createTRPCRouter({
 
       const logoBase64 = input.logo.split(",")[1];
 
-      await s3.send(
-        new PutObjectCommand({
-          Bucket: clubBucket,
-          Key: owner.logo.split(clubBucket)[1],
-          Body: await constraintImage(Buffer.from(logoBase64!, "base64"), 500, 500),
-        })
-      );
+      try {
+        await s3.send(
+          new PutObjectCommand({
+            Bucket: clubBucket,
+            Key: owner.logo.split(clubBucket)[1],
+            Body: await constraintImage(Buffer.from(logoBase64!, "base64"), 500, 500),
+          })
+        );
 
-      await prisma.club.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          name: input.name,
-          detail: input.detail,
-          campus: {
-            connect: {
-              id: input.campusId,
+        await prisma.club.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            name: input.name,
+            detail: input.detail,
+            campus: {
+              connect: {
+                id: input.campusId,
+              },
+            },
+            type: {
+              connect: input.clubType.map((type) => ({
+                id: type,
+              })),
             },
           },
-          type: {
-            connect: input.clubType.map((type) => ({
-              id: type,
-            })),
-          },
-        },
-      });
+        });
 
-      return "OK";
+        return "OK";
+      } catch (error: any) {
+        console.log(error.message);
+        throw new Error("Something went wrong");
+      }
     }),
   settingEditor: protectedProcedure
     .input(z.object({ id: z.string(), emailList: z.array(z.string()) }))
