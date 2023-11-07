@@ -26,7 +26,7 @@ const EditClubSetting: NextPage<Props> = ({ clubData }) => {
   const apiSettingClub = api.club.settingClub.useMutation();
 
   const onSubmit = async () => {
-    let key = toast.loading("กำลังบันทึกข้อมูล");
+    const key = toast.loading("กำลังบันทึกข้อมูล");
     apiSettingClub.mutate(
       {
         id: clubData.id,

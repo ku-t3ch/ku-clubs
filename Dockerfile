@@ -1,7 +1,7 @@
 ##### DEPENDENCIES
 # --platform=linux/amd64
 
-FROM --platform=linux/amd64 node:16-alpine3.17 AS deps
+FROM --platform=linux/amd64 node:18-alpine3.17 AS deps
 RUN apk add --no-cache libc6-compat openssl1.1-compat
 WORKDIR /app
 
@@ -22,7 +22,7 @@ RUN \
 
 ##### BUILDER
 
-FROM --platform=linux/amd64 node:16-alpine3.17 AS builder
+FROM --platform=linux/amd64 node:18-alpine3.17 AS builder
 
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -32,15 +32,15 @@ COPY . .
 ENV SKIP_ENV_VALIDATION=1
 
 RUN \
- if [ -f yarn.lock ]; then SKIP_ENV_VALIDATION=1 yarn prisma:generate && yarn lint && yarn build; \
- elif [ -f package-lock.json ]; then SKIP_ENV_VALIDATION=1 npm run prisma:generate && npm run lint && npm run build; \
- elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && SKIP_ENV_VALIDATION=1 pnpm prisma:generate && pnpm lint && pnpm run build; \
+ if [ -f yarn.lock ]; then SKIP_ENV_VALIDATION=1 yarn db:generate && yarn lint && yarn build; \
+ elif [ -f package-lock.json ]; then SKIP_ENV_VALIDATION=1 npm run db:generate && npm run lint && npm run build; \
+ elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && SKIP_ENV_VALIDATION=1 pnpm db:generate && pnpm lint && pnpm run build; \
  else echo "Lockfile not found." && exit 1; \
  fi
 
 ##### RUNNER
 
-FROM --platform=linux/amd64 node:16-alpine3.17 AS runner
+FROM --platform=linux/amd64 node:18-alpine3.17 AS runner
 WORKDIR /app
 
 RUN addgroup --system --gid 1001 nodejs
