@@ -12,6 +12,15 @@ interface Props {
 
 const withNavbar: string[] = [
   "/",
+  "/explore",
+  "/add-club",
+  "/my-clubs",
+  "/my-account",
+  "/club/[id]",
+  "/club/edit/[id]",
+  "/club/add",
+  "/admin",
+  "/404"
 ];
 
 export const NavbarContextProvider: NextPage<Props> = ({ children }) => {
@@ -19,11 +28,7 @@ export const NavbarContextProvider: NextPage<Props> = ({ children }) => {
 
   return (
     <NavbarContext.Provider value={null}>
-      {withNavbar.includes(pathname) ? (
-        <WithNavbar>{children}</WithNavbar>
-      ) : (
-        children
-      )}
+      {withNavbar.includes(pathname) ? <WithNavbar>{children}</WithNavbar> : children}
     </NavbarContext.Provider>
   );
 };
