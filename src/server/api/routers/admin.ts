@@ -11,7 +11,7 @@ export const adminRouter = createTRPCRouter({
       include: {
         owner: true,
         likes: true,
-      },
+      }, 
     }));
   }),
   approveClub: protectedProcedureAdmin
