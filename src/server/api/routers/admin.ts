@@ -10,7 +10,7 @@ export const adminRouter = createTRPCRouter({
     return (await prisma.club.findMany({
       include: {
         owner: true,
-        likes: true, 
+        likes: true,
       },
     }));
   }),
