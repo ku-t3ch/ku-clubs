@@ -11,6 +11,7 @@ interface Props {
 
 const RichTextEditor: NextPage<Props> = ({ onChange, initialValue, error }) => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
+  
   return (
     <>
       {error && <span className="text-red-500">*{error}</span>}
