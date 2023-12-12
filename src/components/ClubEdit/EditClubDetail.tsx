@@ -280,8 +280,8 @@ const EditClubDetail: NextPage<Props> = ({ clubData, id }) => {
           )}
         </Form.Item>
       </Form>
-      <div className="w-full flex-col gap-7 md:flex md:w-1/6">
-        <Button loading={updateClub.isLoading} onClick={onSubmit} color="primary" size="large" className="w-full">
+      <div className="w-full flex-col gap-7 md:flex md:w-1/6 relative">
+        <Button loading={updateClub.isLoading} onClick={onSubmit} color="primary" size="large" className="top-5 w-full sticky ">
           Save
         </Button>
       </div>
