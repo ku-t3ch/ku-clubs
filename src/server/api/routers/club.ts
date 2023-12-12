@@ -13,7 +13,7 @@ import checkCanEdit from "@/utils/checkCanEdit";
 export const clubRouter = createTRPCRouter({
   getAllClubs: publicProcedure
     .input(z.object({ search: z.string().optional() }).optional())
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       const clubs = await prisma.club.findMany({
         where: {
           isPublic: true,

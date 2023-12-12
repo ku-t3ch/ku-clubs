@@ -82,9 +82,9 @@ const Club: NextPage<Props> = ({ clubData, clicked }) => {
 
   return (
     <>
-      <div className="z-10 mx-auto flex max-w-6xl flex-col gap-5 px-3 py-3">
+      <div className="z-10 mx-auto flex max-w-6xl flex-col gap-5 px-3 py-3 w-full">
         <BackButton />
-        <div className="flex flex-col gap-6 md:flex-row md:gap-9">
+        <div className="flex flex-col gap-6 md:flex-row md:gap-9 w-full">
           <img
             className="h-[10rem] w-[10rem] rounded-2xl md:h-[200px] md:w-[200px]"
             src={clubData.logo}
