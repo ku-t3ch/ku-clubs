@@ -1,6 +1,7 @@
 
 import Band from "@/components/common/Band";
 import { Icon } from "@iconify/react";
+import { ChevronRightIcon } from "lucide-react";
 import { type NextPage } from "next";
 import Link from "next/link";
 
@@ -19,7 +20,7 @@ const Home: NextPage = () => {
           <div className="max-w-[50rem] text-[1rem] font-bold text-gray-500 md:text-[1.5rem]">{description}</div>
           <Link href="/explore" className="btn-primary mt-5 w-fit gap-5 px-10 text-[1.5rem] md:mt-0">
             สำรวจชมรม
-            <Icon icon="material-symbols:chevron-right-rounded" className="text-4xl text-white" />
+            <ChevronRightIcon className="text-4xl text-white" />
           </Link>
         </div>
       </div>

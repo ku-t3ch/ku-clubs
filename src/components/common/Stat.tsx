@@ -35,7 +35,11 @@ const Stat: NextPage<Props> = ({ likes, views, location, size, clubData, clicked
     const [clickedIn, setClicked] = useState(clicked);
 
     const onClickLike = () => {
-        let keyLoading = toast.loading("Loading...");
+        if (status !== "authenticated") {
+            toast.error("You must login first!");
+            return;
+        }
+            let keyLoading = toast.loading("Loading...");
         if (!clickedIn && clubData?.id) {
             likeApi.mutate(
                 { id: clubData.id },

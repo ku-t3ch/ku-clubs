@@ -19,7 +19,7 @@ const Explore: NextPage<Props> = () => {
     useEffect(() => {
         const timeout = setTimeout(async () => {
             clubAllApi.mutateAsync({ search: SearchKeyWord });
-        }, 500);
+        }, 300);
         return () => clearTimeout(timeout);
     }, [SearchKeyWord]);
 

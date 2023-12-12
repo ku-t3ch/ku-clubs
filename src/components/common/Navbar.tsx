@@ -9,6 +9,7 @@ import Band from "./Band";
 import { signOut, useSession } from "next-auth/react";
 import tw from "tailwind-styled-components";
 import { AnimatePresence, motion } from "framer-motion";
+import { LogInIcon, MenuIcon, UserRoundIcon, XIcon } from "lucide-react";
 
 const Menu = tw.div<{ $active?: boolean; isNotPointer?: boolean }>`
     font-bold
@@ -96,7 +97,7 @@ const Navbar: NextPage<Props> = () => {
                         {status === "authenticated" ? (
                             <div className="dropdown">
                                 <div className="btn-secondary px-3">
-                                    <Icon icon="mdi:account" className="text-xl" />
+                                    <UserRoundIcon />
                                 </div>
                                 <div className="dropdown-content absolute right-0 z-50 pt-2">
                                     <div className="flex min-w-[10rem] flex-col gap-4 rounded-2xl bg-white p-4 shadow-md">
@@ -119,7 +120,7 @@ const Navbar: NextPage<Props> = () => {
                             </div>
                         ) : (
                             <Link href="/sign-in?callbackUrl=/" className="btn-primary px-5">
-                                <Icon icon="mdi:login" className="text-2xl text-white" />
+                                <LogInIcon />
                             </Link>
                         )}
                     </div>
@@ -128,7 +129,7 @@ const Navbar: NextPage<Props> = () => {
             {/* Mobile Screen Session */}
             <div className="flex flex-col gap-10 md:hidden">
                 <div className="w-fit cursor-pointer" onClick={onNavbarToggle}>
-                    <Icon icon={NavbarToggle ? "maki:cross-11" : "pajamas:hamburger"} className="text-2xl" />
+                    {NavbarToggle ? <XIcon /> : <MenuIcon />}
                 </div>
             </div>
             <AnimatePresence>
