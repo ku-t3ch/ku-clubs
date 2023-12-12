@@ -4,8 +4,10 @@ interface Props {}
 
 const Footer: NextPage<Props> = () => {
   return (
-    <div className="mx-auto flex w-full max-w-6xl justify-center px-3">
-      {/* <div>© 2023 KU Tech. All right reserved.</div> */}
+    <div className="mx-auto flex flex-col items-center w-full justify-center p-3">
+      <div>© {new Date().getFullYear()} KU Tech. All right reserved.</div>
+      {/* <div>Made with 💖 for everyone</div>
+      <div>by Teerut Srithongdee</div> */}
     </div>
   );
 };
