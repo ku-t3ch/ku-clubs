@@ -2,7 +2,7 @@ await import("./src/env.mjs");
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   output: "standalone",
   i18n: {
