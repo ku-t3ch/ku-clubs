@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Band from "./Band";
 import { signOut, useSession } from "next-auth/react";
 import tw from "tailwind-styled-components";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Menu = tw.div<{ $active?: boolean; isNotPointer?: boolean }>`
     font-bold
@@ -130,11 +131,20 @@ const Navbar: NextPage<Props> = () => {
                     <Icon icon={NavbarToggle ? "maki:cross-11" : "pajamas:hamburger"} className="text-2xl" />
                 </div>
             </div>
-            {NavbarToggle && (
-                <div className="absolute bottom-0 left-0 right-0 top-[4rem] z-20 flex justify-center bg-white md:hidden">
-                    <div className="flex flex-col items-center gap-10">
-                        <Band />
-                        {/* {navbarItems.map((item, id) => (
+            <AnimatePresence>
+                {NavbarToggle && (
+                    <motion.div
+                        initial={{ opacity: 0, x: "-100%" }}
+                        animate={{ opacity: 1, x: "0%" }}
+                        exit={{ opacity: 0, x: "-100%" }}
+                        transition={{
+                            duration:0.1,
+                            ease: "easeInOut",
+                        }}
+                        className="absolute bottom-0 left-0 right-0 top-[4rem] z-20 flex justify-center bg-white md:hidden">
+                        <div className="flex flex-col items-center gap-10">
+                            <Band />
+                            {/* {navbarItems.map((item, id) => (
               <MenuWithLink
                 href={item.to}
                 key={id}
@@ -144,60 +154,61 @@ const Navbar: NextPage<Props> = () => {
                 {item.label}
               </MenuWithLink>
             ))} */}
-                        {navbarItems.map((item, id) =>
-                            !item.protected && !item.onlyAdmin ? (
-                                <MenuWithLink
-                                    href={item.to}
-                                    key={id}
-                                    className={"font-bold"}
-                                    $active={isNavbarItemActive(item.to)}
-                                >
-                                    {item.label}
-                                </MenuWithLink>
-                            ) : null
-                        )}
-                        {navbarItems.map((item, id) =>
-                            item.protected && !item.onlyAdmin && status === "authenticated" ? (
-                                <MenuWithLink
-                                    href={item.to}
-                                    key={id}
-                                    className={"font-bold"}
-                                    $active={isNavbarItemActive(item.to)}
-                                >
-                                    {item.label}
-                                </MenuWithLink>
-                            ) : null
-                        )}
-                        {navbarItems.map((item, id) =>
-                            item.protected && item.onlyAdmin && session?.user.isAdmin ? (
-                                <MenuWithLink
-                                    href={item.to}
-                                    key={id}
-                                    className={"font-bold"}
-                                    $active={isNavbarItemActive(item.to)}
-                                >
-                                    {item.label}
-                                </MenuWithLink>
-                            ) : null
-                        )}
-                        {status === "authenticated" ? (
-                            <>
-                                {/* <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>
+                            {navbarItems.map((item, id) =>
+                                !item.protected && !item.onlyAdmin ? (
+                                    <MenuWithLink
+                                        href={item.to}
+                                        key={id}
+                                        className={"font-bold"}
+                                        $active={isNavbarItemActive(item.to)}
+                                    >
+                                        {item.label}
+                                    </MenuWithLink>
+                                ) : null
+                            )}
+                            {navbarItems.map((item, id) =>
+                                item.protected && !item.onlyAdmin && status === "authenticated" ? (
+                                    <MenuWithLink
+                                        href={item.to}
+                                        key={id}
+                                        className={"font-bold"}
+                                        $active={isNavbarItemActive(item.to)}
+                                    >
+                                        {item.label}
+                                    </MenuWithLink>
+                                ) : null
+                            )}
+                            {navbarItems.map((item, id) =>
+                                item.protected && item.onlyAdmin && session?.user.isAdmin ? (
+                                    <MenuWithLink
+                                        href={item.to}
+                                        key={id}
+                                        className={"font-bold"}
+                                        $active={isNavbarItemActive(item.to)}
+                                    >
+                                        {item.label}
+                                    </MenuWithLink>
+                                ) : null
+                            )}
+                            {status === "authenticated" ? (
+                                <>
+                                    {/* <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>
                   บัชชีของฉัน
                 </MenuWithLink> */}
-                                <Menu>{session.user.email}</Menu>
-                                <Menu onClick={() => signOut()} className={clsx("text-red-500")}>
-                                    ออกจากระบบ
-                                </Menu>
-                            </>
-                        ) : (
-                            <Link href="/sign-in?callbackUrl=/" className={clsx("font-bold")}>
-                                เข้าสู่ระบบ
-                            </Link>
-                        )}
-                    </div>
-                </div>
-            )}
+                                    <Menu>{session.user.email}</Menu>
+                                    <Menu onClick={() => signOut()} className={clsx("text-red-500")}>
+                                        ออกจากระบบ
+                                    </Menu>
+                                </>
+                            ) : (
+                                <Link href="/sign-in?callbackUrl=/" className={clsx("font-bold")}>
+                                    เข้าสู่ระบบ
+                                </Link>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
