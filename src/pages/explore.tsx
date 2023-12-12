@@ -17,19 +17,11 @@ const Explore: NextPage<Props> = () => {
     const { push } = useRouter()
 
     useEffect(() => {
-        if (SearchKeyWord === "") {
-            clubAllApi.mutateAsync({ search: SearchKeyWord });
-            return;
-        };
         const timeout = setTimeout(async () => {
             clubAllApi.mutateAsync({ search: SearchKeyWord });
         }, 500);
         return () => clearTimeout(timeout);
     }, [SearchKeyWord]);
-
-    useEffect(() => {
-        clubAllApi.mutateAsync({ search: SearchKeyWord });
-    },[])
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchKeyWord(e.target.value);
