@@ -11,7 +11,7 @@ const WithNavbar: NextPage<Props> = ({ children }) => {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      <div className="flex-grow">{children}</div>
+      <div className="flex-grow ">{children}</div>
       <Footer />
     </div>
   );

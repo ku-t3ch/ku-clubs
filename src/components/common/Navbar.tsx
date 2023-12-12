@@ -38,7 +38,7 @@ const navbarItems: NavItem[] = [
     protected: true,
   },
   {
-    label: "Admin",
+    label: "บริหารจัดการ",
     to: "/admin",
     onlyAdmin: true,
     protected: true,
@@ -63,7 +63,7 @@ const Navbar: NextPage<Props> = () => {
   }, [asPath]);
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col px-3 py-5">
+    <div className="mx-auto flex w-full max-w-6xl flex-col px-3 py-5 bg-white">
       {/* Desktop Screen Session */}
       <div className="hidden flex-col gap-10 md:flex">
         <div className="flex justify-between">
@@ -107,9 +107,9 @@ const Navbar: NextPage<Props> = () => {
                       />
                     )}
                     <Menu isNotPointer>{session.user.email}</Menu>
-                    <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>
+                    {/* <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>
                       บัชชีของฉัน
-                    </MenuWithLink>
+                    </MenuWithLink> */}
                     <Menu onClick={() => signOut()} className="text-red-500">
                       ออกจากระบบ
                     </Menu>
@@ -182,9 +182,9 @@ const Navbar: NextPage<Props> = () => {
             )}
             {status === "authenticated" ? (
               <>
-                <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>
+                {/* <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>
                   บัชชีของฉัน
-                </MenuWithLink>
+                </MenuWithLink> */}
                 <Menu>{session.user.email}</Menu>
                 <Menu onClick={() => signOut()} className={clsx("text-red-500")}>
                   ออกจากระบบ
