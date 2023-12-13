@@ -30,6 +30,10 @@ const navbarItems: NavItem[] = [
         label: "หน้าแรก",
         to: "/",
     },
+    // {
+    //     label: "ข่าวสาร",
+    //     to: "/news",
+    // },
     {
         label: "สำรวจชมรม",
         to: "/explore",
@@ -65,87 +69,88 @@ const Navbar: NextPage<Props> = () => {
     }, [asPath]);
 
     return (
-        <div className="mx-auto flex w-full max-w-6xl flex-col px-5 py-5 bg-white">
-            {/* Desktop Screen Session */}
-            <div className="hidden flex-col gap-10 md:flex">
-                <div className="flex justify-between">
-                    <Band />
-                    <div className="flex items-center gap-10">
-                        <div className="flex space-x-8">
-                            {navbarItems.map((item, id) =>
-                                !item.protected && !item.onlyAdmin ? (
-                                    <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
-                                        {item.label}
-                                    </MenuWithLink>
-                                ) : null
-                            )}
-                            {navbarItems.map((item, id) =>
-                                item.protected && !item.onlyAdmin && status === "authenticated" ? (
-                                    <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
-                                        {item.label}
-                                    </MenuWithLink>
-                                ) : null
-                            )}
-                            {navbarItems.map((item, id) =>
-                                item.protected && item.onlyAdmin && session?.user.isAdmin ? (
-                                    <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
-                                        {item.label}
-                                    </MenuWithLink>
-                                ) : null
-                            )}
-                        </div>
-                        {status === "authenticated" ? (
-                            <div className="dropdown">
-                                <div className="btn-secondary px-3">
-                                    <UserRoundIcon />
-                                </div>
-                                <div className="dropdown-content absolute right-0 z-50 pt-2">
-                                    <div className="flex min-w-[10rem] flex-col gap-4 rounded-2xl bg-white p-4 shadow-md">
-                                        {session.user.image && (
-                                            <img
-                                                src={session.user.image}
-                                                alt="profile-image"
-                                                className="w-10 rounded-md"
-                                            />
-                                        )}
-                                        <Menu isNotPointer>{session.user.email}</Menu>
-                                        {/* <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>
+        <div className="px-5">
+            <div className="mx-auto flex w-full max-w-6xl flex-col py-5 bg-white">
+                {/* Desktop Screen Session */}
+                <div className="hidden flex-col gap-10 md:flex">
+                    <div className="flex justify-between">
+                        <Band />
+                        <div className="flex items-center gap-10">
+                            <div className="flex space-x-8">
+                                {navbarItems.map((item, id) =>
+                                    !item.protected && !item.onlyAdmin ? (
+                                        <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
+                                            {item.label}
+                                        </MenuWithLink>
+                                    ) : null
+                                )}
+                                {navbarItems.map((item, id) =>
+                                    item.protected && !item.onlyAdmin && status === "authenticated" ? (
+                                        <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
+                                            {item.label}
+                                        </MenuWithLink>
+                                    ) : null
+                                )}
+                                {navbarItems.map((item, id) =>
+                                    item.protected && item.onlyAdmin && session?.user.isAdmin ? (
+                                        <MenuWithLink href={item.to} key={id} $active={isNavbarItemActive(item.to)}>
+                                            {item.label}
+                                        </MenuWithLink>
+                                    ) : null
+                                )}
+                            </div>
+                            {status === "authenticated" ? (
+                                <div className="dropdown">
+                                    <div className="btn-secondary px-3">
+                                        <UserRoundIcon />
+                                    </div>
+                                    <div className="dropdown-content absolute right-0 z-50 pt-2">
+                                        <div className="flex min-w-[10rem] flex-col gap-4 rounded-2xl bg-white p-4 shadow-md">
+                                            {session.user.image && (
+                                                <img
+                                                    src={session.user.image}
+                                                    alt="profile-image"
+                                                    className="w-10 rounded-md"
+                                                />
+                                            )}
+                                            <Menu isNotPointer>{session.user.email}</Menu>
+                                            {/* <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>
                       บัชชีของฉัน
                     </MenuWithLink> */}
-                                        <Menu onClick={() => signOut({ callbackUrl: "/" })} className="text-red-500">
-                                            ออกจากระบบ
-                                        </Menu>
+                                            <Menu onClick={() => signOut({ callbackUrl: "/" })} className="text-red-500">
+                                                ออกจากระบบ
+                                            </Menu>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ) : (
-                            <Link href="/sign-in?callbackUrl=/" className="btn-primary px-5">
-                                <LogInIcon />
-                            </Link>
-                        )}
+                            ) : (
+                                <Link href="/sign-in?callbackUrl=/" className="btn-primary px-5">
+                                    <LogInIcon />
+                                </Link>
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
-            {/* Mobile Screen Session */}
-            <div className="flex flex-col gap-10 md:hidden">
-                <div className="w-fit cursor-pointer" onClick={onNavbarToggle}>
-                    {NavbarToggle ? <XIcon /> : <MenuIcon />}
+                {/* Mobile Screen Session */}
+                <div className="flex flex-col gap-10 md:hidden">
+                    <div className="w-fit cursor-pointer" onClick={onNavbarToggle}>
+                        {NavbarToggle ? <XIcon /> : <MenuIcon />}
+                    </div>
                 </div>
-            </div>
-            <AnimatePresence>
-                {NavbarToggle && (
-                    <motion.div
-                        initial={{ opacity: 0, x: "-100%" }}
-                        animate={{ opacity: 1, x: "0%" }}
-                        exit={{ opacity: 0, x: "-100%" }}
-                        transition={{
-                            duration:0.1,
-                            ease: "easeInOut",
-                        }}
-                        className="absolute bottom-0 left-0 right-0 top-[4rem] z-20 flex justify-center bg-white md:hidden">
-                        <div className="flex flex-col items-center gap-10">
-                            <Band />
-                            {/* {navbarItems.map((item, id) => (
+                <AnimatePresence>
+                    {NavbarToggle && (
+                        <motion.div
+                            initial={{ opacity: 0, x: "-100%" }}
+                            animate={{ opacity: 1, x: "0%" }}
+                            exit={{ opacity: 0, x: "-100%" }}
+                            transition={{
+                                duration: 0.1,
+                                ease: "easeInOut",
+                            }}
+                            className="absolute bottom-0 left-0 right-0 top-[4rem] z-20 flex justify-center bg-white md:hidden">
+                            <div className="flex flex-col items-center gap-10">
+                                <Band />
+                                {/* {navbarItems.map((item, id) => (
               <MenuWithLink
                 href={item.to}
                 key={id}
@@ -155,62 +160,64 @@ const Navbar: NextPage<Props> = () => {
                 {item.label}
               </MenuWithLink>
             ))} */}
-                            {navbarItems.map((item, id) =>
-                                !item.protected && !item.onlyAdmin ? (
-                                    <MenuWithLink
-                                        href={item.to}
-                                        key={id}
-                                        className={"font-bold"}
-                                        $active={isNavbarItemActive(item.to)}
-                                    >
-                                        {item.label}
-                                    </MenuWithLink>
-                                ) : null
-                            )}
-                            {navbarItems.map((item, id) =>
-                                item.protected && !item.onlyAdmin && status === "authenticated" ? (
-                                    <MenuWithLink
-                                        href={item.to}
-                                        key={id}
-                                        className={"font-bold"}
-                                        $active={isNavbarItemActive(item.to)}
-                                    >
-                                        {item.label}
-                                    </MenuWithLink>
-                                ) : null
-                            )}
-                            {navbarItems.map((item, id) =>
-                                item.protected && item.onlyAdmin && session?.user.isAdmin ? (
-                                    <MenuWithLink
-                                        href={item.to}
-                                        key={id}
-                                        className={"font-bold"}
-                                        $active={isNavbarItemActive(item.to)}
-                                    >
-                                        {item.label}
-                                    </MenuWithLink>
-                                ) : null
-                            )}
-                            {status === "authenticated" ? (
-                                <>
-                                    {/* <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>
+                                {navbarItems.map((item, id) =>
+                                    !item.protected && !item.onlyAdmin ? (
+                                        <MenuWithLink
+                                            href={item.to}
+                                            key={id}
+                                            className={"font-bold"}
+                                            $active={isNavbarItemActive(item.to)}
+                                        >
+                                            {item.label}
+                                        </MenuWithLink>
+                                    ) : null
+                                )}
+                                {navbarItems.map((item, id) =>
+                                    item.protected && !item.onlyAdmin && status === "authenticated" ? (
+                                        <MenuWithLink
+                                            href={item.to}
+                                            key={id}
+                                            className={"font-bold"}
+                                            $active={isNavbarItemActive(item.to)}
+                                        >
+                                            {item.label}
+                                        </MenuWithLink>
+                                    ) : null
+                                )}
+                                {navbarItems.map((item, id) =>
+                                    item.protected && item.onlyAdmin && session?.user.isAdmin ? (
+                                        <MenuWithLink
+                                            href={item.to}
+                                            key={id}
+                                            className={"font-bold"}
+                                            $active={isNavbarItemActive(item.to)}
+                                        >
+                                            {item.label}
+                                        </MenuWithLink>
+                                    ) : null
+                                )}
+                                {status === "authenticated" ? (
+                                    <>
+                                        {/* <MenuWithLink href="/my-account" $active={isNavbarItemActive("/my-account")}>
                   บัชชีของฉัน
                 </MenuWithLink> */}
-                                    <Menu>{session.user.email}</Menu>
-                                    <Menu onClick={() => signOut()} className={clsx("text-red-500")}>
-                                        ออกจากระบบ
-                                    </Menu>
-                                </>
-                            ) : (
-                                <Link href="/sign-in?callbackUrl=/" className={clsx("font-bold")}>
-                                    เข้าสู่ระบบ
-                                </Link>
-                            )}
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                                        <Menu>{session.user.email}</Menu>
+                                        <Menu onClick={() => signOut()} className={clsx("text-red-500")}>
+                                            ออกจากระบบ
+                                        </Menu>
+                                    </>
+                                ) : (
+                                    <Link href="/sign-in?callbackUrl=/" className={clsx("font-bold")}>
+                                        เข้าสู่ระบบ
+                                    </Link>
+                                )}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
         </div>
+
     );
 };
 
