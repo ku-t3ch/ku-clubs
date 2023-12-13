@@ -44,7 +44,7 @@ export const adminRouter = createTRPCRouter({
   }),
   removeAdmin: protectedProcedureAdmin
     .input(z.object({ email: z.string() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const checkIsSelf = await prisma.user.findFirst({
         where: {
           email: input.email,
@@ -52,7 +52,11 @@ export const adminRouter = createTRPCRouter({
         },
       });
 
-      if (checkIsSelf) {
+      if (!checkIsSelf) {
+        throw new Error("User is not an admin");
+      }
+
+      if (checkIsSelf?.email === ctx.session.user.email) {
         throw new Error("Cannot remove yourself as admin");
       }
 
