@@ -1,5 +1,5 @@
-import { Campus, Club, ClubType } from "@prisma/client";
-import { NextPage } from "next";
+import { type Campus, type Club, type ClubType } from "@prisma/client";
+import { type NextPage } from "next";
 import { Button } from "../form/Button";
 import { Form } from "antd";
 import { Input } from "../form/Input";
@@ -87,7 +87,7 @@ const EditClubEditor: NextPage<Props> = ({ clubData }) => {
         <Form.Item label={isOwner ? `เพิ่ม email สำหรับผู้แก้ไข` : `email สำหรับผู้แก้ไข`}>
           <div className="flex flex-col gap-2">
             {isOwner
-              ? EmailList.map((email, index) => (
+              ? EmailList.map((email) => (
                   <div className="flex w-full gap-2" key={email.id}>
                     <Input
                       value={email.email}
@@ -111,7 +111,7 @@ const EditClubEditor: NextPage<Props> = ({ clubData }) => {
                     </Button>
                   </div>
                 ))
-              : EmailList.map((email, index) => (
+              : EmailList.map((email) => (
                   <div className="flex w-full gap-2" key={email.id}>
                     <Input value={email.email} disabled type={"text"} />
                   </div>

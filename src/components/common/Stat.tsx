@@ -1,10 +1,10 @@
 import { api } from "@/utils/api";
 import { Icon } from "@iconify/react";
-import { Campus, Club, User } from "@prisma/client";
+import { Campus, Club } from "@prisma/client";
 import clsx from "clsx";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
-import { use, useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 interface Props {

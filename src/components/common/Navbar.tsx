@@ -1,5 +1,4 @@
 import { NavItem } from "@/interfaces/NavItem";
-import { Icon } from "@iconify/react";
 import clsx from "clsx";
 import { NextPage } from "next";
 import Link from "next/link";

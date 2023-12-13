@@ -383,7 +383,7 @@ export const clubRouter = createTRPCRouter({
         });
       }
     }),
-  getLikeAmount: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+  getLikeAmount: publicProcedure.input(z.string()).query(async ({ input }) => {
     const club = await prisma.club.findUnique({
       where: {
         id: input,
