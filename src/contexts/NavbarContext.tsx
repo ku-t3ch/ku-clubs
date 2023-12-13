@@ -61,6 +61,10 @@ const withNavbar: {
             adminOnly: true,
         },
         {
+            path: "/admin/club/all",
+            adminOnly: true,
+        },
+        {
             path: "/404",
         }
     ];
