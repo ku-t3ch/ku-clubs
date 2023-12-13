@@ -87,7 +87,7 @@ const Index: NextPage<Props> = () => {
     <>
       <div className="flex flex-col gap-5">
         <div className="flex items-center justify-between">
-          <Table dataSource={getAllClub.data} columns={columns} className="w-full" />
+          <Table loading={getAllClub.isLoading} dataSource={getAllClub.data} columns={columns} className="w-full" />
         </div>
       </div>
     </>
