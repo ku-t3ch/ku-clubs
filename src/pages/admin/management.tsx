@@ -19,17 +19,16 @@ const Management: NextPage<Props> = () => {
     const emailAddRef = useRef<InputRef>(null);
     const { data: session } = useSession();
 
-    const onDropAdmin: MouseEventHandler<HTMLButtonElement> = (e) => {
+    const onDropAdmin = (email: string | null) => {
         Modal.confirm({
             title: 'Drop Admin',
             content: "Are you sure you want to drop this admin?",
             okText: "Yes",
             cancelText: "No",
             onOk: (data) => {
-                if (!e.currentTarget.value) return
-
+                if (!email) return
                 let key = toast.loading('Dropping Admin...')
-                dropAdminApi.mutate({ email: e.currentTarget.value }, {
+                dropAdminApi.mutate({ email: email }, {
                     onSuccess: () => {
                         getAllAdmins.refetch()
                         toast.success('Dropped Admin', { id: key })
@@ -104,7 +103,7 @@ const Management: NextPage<Props> = () => {
             render: (_, record) => {
                 return (
                     <div className="flex gap-3">
-                        <Button danger disabled={record.email === session?.user.email} onClick={onDropAdmin} value={record.email!} type="primary">Drop Admin</Button>
+                        <Button danger onClick={() => onDropAdmin(record.email)} type="primary">Drop Admin</Button>
                     </div>
                 );
             },
