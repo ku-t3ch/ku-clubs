@@ -25,7 +25,7 @@ const WithNavbarEditor: NextPage<Props> = ({ children }) => {
         {
             key: '/my-clubs',
             icon: <UsersRoundIcon size={15} />,
-            label: 'ชมของฉัน',
+            label: 'ชมรมของฉัน',
             onClick: () => push('/my-clubs'),
         },
         {
