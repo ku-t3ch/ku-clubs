@@ -1,4 +1,4 @@
-import { Campus, Club, ClubType } from "@prisma/client";
+import { type Campus, type Club, type ClubType } from "@prisma/client";
 import { NextPage } from "next";
 import { Button } from "../form/Button";
 import { Form, Switch, Typography } from "antd";
