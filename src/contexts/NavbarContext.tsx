@@ -65,6 +65,10 @@ const withNavbar: {
             adminOnly: true,
         },
         {
+            path: "/admin/user/all",
+            adminOnly: true,
+        },
+        {
             path: "/404",
         }
     ];
@@ -72,11 +76,24 @@ const withNavbar: {
 export const NavbarContextProvider: NextPage<Props> = ({ children }) => {
     const { pathname } = useRouter();
 
-    const reder = withNavbar.find((path) => path.path === pathname)?.adminOnly ? "admin" : withNavbar.find((path) => path.path === pathname)?.editorOnly ? "editor" : "user";
+    const reder: string = withNavbar.map((item) => {
+        if (item.path === pathname) {
+            if (item.adminOnly) {
+                return "admin";
+            } else if (item.editorOnly) {
+                return "editor";
+            } else {
+                return "public";
+            }
+        }
+    }).find((role) => role !== undefined) || "blank";
 
     return (
         <NavbarContext.Provider value={null}>
-            {reder === "admin" ? <WithNavbarAdmin>{children}</WithNavbarAdmin> : reder === "editor" ? <WithNavbarEditor>{children}</WithNavbarEditor> : <WithNavbar>{children}</WithNavbar>}
+            {reder === "public" && <WithNavbar>{children}</WithNavbar>}
+            {reder === "admin" && <WithNavbarAdmin>{children}</WithNavbarAdmin>}
+            {reder === "editor" && <WithNavbarEditor>{children}</WithNavbarEditor>}
+            {reder === "blank" && children}
         </NavbarContext.Provider>
     );
 };
