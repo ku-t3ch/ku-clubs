@@ -23,6 +23,15 @@ export const adminRouter = createTRPCRouter({
         },
       });
     }),
+  removeClub: protectedProcedureAdmin
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      return await prisma.club.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
   addAdmin: protectedProcedureAdmin
     .input(z.object({ email: z.string() }))
     .mutation(async ({ input }) => {

@@ -29,6 +29,12 @@ const WithNavbarAdmin: NextPage<Props> = ({ children }) => {
             onClick: () => push('/admin'),
         },
         {
+            key: '/admin/club/all',
+            icon: <UsersRoundIcon size={15} />,
+            label: 'ชมรมทั้งหมด',
+            onClick: () => push('/admin/club/all'),
+        },
+        {
             key: '/admin/management',
             icon: <UsersIcon size={15} />,
             label: 'จัดการผู้ดูแล',
