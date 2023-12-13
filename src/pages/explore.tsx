@@ -28,7 +28,7 @@ const Explore: NextPage<Props> = () => {
     };
 
     return (
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-3 py-3">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 py-3">
             <Input type={"text"} placeholder="ค้นหาชมรม" onChange={handleSearch} />
             <div className="flex flex-wrap gap-3 overflow-y-auto">
                 <AnimatePresence>

@@ -9,7 +9,7 @@ interface Props {}
 const SignIn: NextPage<Props> = () => {
   const { query } = useRouter();
   return (
-    <div className="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-3 py-3">
+    <div className="mx-auto flex min-h-screen max-w-6xl items-center justify-center py-3">
       <div className="flex flex-col">
         <h1 className="mb-5 text-3xl font-bold">Sign In</h1>
         <button

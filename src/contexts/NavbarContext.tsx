@@ -4,31 +4,31 @@ import { useRouter } from "next/router";
 
 import { type ReactNode, createContext } from "react";
 
-const NavbarContext = createContext(null);
+export const NavbarContext = createContext(null);
 
 interface Props {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 const withNavbar: string[] = [
-  "/",
-  "/explore",
-  "/add-club",
-  "/my-clubs",
-  "/my-account",
-  "/club/[id]",
-  "/club/edit/[id]",
-  "/club/add",
-  "/admin",
-  "/404"
+    "/",
+    "/explore",
+    "/add-club",
+    "/my-clubs",
+    "/my-account",
+    "/club/[id]",
+    "/club/edit/[id]",
+    "/club/add",
+    "/admin",
+    "/404"
 ];
 
 export const NavbarContextProvider: NextPage<Props> = ({ children }) => {
-  const { pathname } = useRouter();
+    const { pathname } = useRouter();
 
-  return (
-    <NavbarContext.Provider value={null}>
-      {withNavbar.includes(pathname) ? <WithNavbar>{children}</WithNavbar> : children}
-    </NavbarContext.Provider>
-  );
+    return (
+        <NavbarContext.Provider value={null}>
+            {withNavbar.includes(pathname) ? <WithNavbar>{children}</WithNavbar> : children}
+        </NavbarContext.Provider>
+    );
 };
