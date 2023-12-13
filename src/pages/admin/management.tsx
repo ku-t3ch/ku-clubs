@@ -103,7 +103,7 @@ const Management: NextPage<Props> = () => {
             render: (_, record) => {
                 return (
                     <div className="flex gap-3">
-                        <Button danger onClick={() => onDropAdmin(record.email)} type="primary">Drop Admin</Button>
+                        <Button danger disabled={record.email === session?.user.email} onClick={() => onDropAdmin(record.email)} type="primary">Drop Admin</Button>
                     </div>
                 );
             },
