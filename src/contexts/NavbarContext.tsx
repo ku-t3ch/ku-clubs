@@ -21,6 +21,9 @@ const withNavbar: {
             path: "/",
         },
         {
+            path: "/news",
+        },
+        {
             path: "/explore",
         },
         {

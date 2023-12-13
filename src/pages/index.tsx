@@ -12,9 +12,6 @@ const Home: NextPage = () => {
     const title = "คุณกำลังมองหา ชมรมอยู่ใช่ไหม";
     const description = "เว็บเราคือแหล่งรวบรวมชมรมต่าง ๆ ในมหาวิทยาลัยเกษตรศาสตร์ ทุกวิทยาเขต เพื่อน ๆ ทุกคนสามารถค้นหาชมรมที่โดนใจได้";
 
-    console.log(test);
-
-
     return (
         <div>
             <div className="z-10 mx-auto max-w-6xl py-3 md:py-20">
