@@ -11,6 +11,9 @@ export const adminRouter = createTRPCRouter({
       },
     });
   }),
+  getAllUsers: protectedProcedureAdmin.query(async () => {
+    return await prisma.user.findMany();
+  }),
   approveClub: protectedProcedureAdmin
     .input(z.object({ id: z.string(), approved: z.boolean() }))
     .mutation(async ({ input }) => {
