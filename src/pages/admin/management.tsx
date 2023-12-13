@@ -20,16 +20,27 @@ const Management: NextPage<Props> = () => {
     const { data: session } = useSession();
 
     const onDropAdmin: MouseEventHandler<HTMLButtonElement> = (e) => {
-        let key = toast.loading('Dropping Admin...')
-        dropAdminApi.mutate({ email: e.currentTarget.value }, {
-            onSuccess: () => {
-                getAllAdmins.refetch()
-                toast.success('Dropped Admin', { id: key })
-            },
-            onError: (error) => {
-                toast.error(error.message, { id: key })
+        Modal.confirm({
+            title: 'Drop Admin',
+            content: "Are you sure you want to drop this admin?",
+            okText: "Yes",
+            cancelText: "No",
+            onOk: (data) => {
+                if (!e.currentTarget.value) return
+
+                let key = toast.loading('Dropping Admin...')
+                dropAdminApi.mutate({ email: e.currentTarget.value }, {
+                    onSuccess: () => {
+                        getAllAdmins.refetch()
+                        toast.success('Dropped Admin', { id: key })
+                    },
+                    onError: (error) => {
+                        toast.error(error.message, { id: key })
+                    }
+                })
             }
         })
+
     }
 
     const onAddAdmin = () => {
