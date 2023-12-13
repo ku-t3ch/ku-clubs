@@ -35,7 +35,7 @@ const MyClubs: NextPage<Props> = () => {
 
   return (
     <>
-      <div className="mx-auto flex max-w-6xl flex-col gap-5 px-3 py-3">
+      <div className="mx-auto flex max-w-6xl flex-col gap-5 py-3">
         <div className="flex w-full flex-col justify-between gap-5">
           <div className="flex items-center justify-between">
             <div className="text-3xl font-bold">ชมรมของฉัน</div>

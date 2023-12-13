@@ -65,7 +65,7 @@ const Navbar: NextPage<Props> = () => {
     }, [asPath]);
 
     return (
-        <div className="mx-auto flex w-full max-w-6xl flex-col px-3 py-5 bg-white">
+        <div className="mx-auto flex w-full max-w-6xl flex-col px-5 py-5 bg-white">
             {/* Desktop Screen Session */}
             <div className="hidden flex-col gap-10 md:flex">
                 <div className="flex justify-between">

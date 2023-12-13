@@ -151,7 +151,7 @@ const Add: NextPage<Props> = ({ id, clubData }) => {
 
   return (
     <>
-      <div className="mx-auto flex max-w-6xl flex-col gap-5 px-3 py-3">
+      <div className="mx-auto flex max-w-6xl flex-col gap-5 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BackButton className="hidden md:flex" />
