@@ -1,10 +1,9 @@
 import { api } from "@/utils/api";
 import { Club, User } from "@prisma/client";
-import { Badge, Button, Switch, Table, TableColumnType } from "antd";
+import { Badge, Switch, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { NextPage } from "next";
 import Link from "next/link";
-import { useState } from "react";
 
 interface Props {
   canAccess: boolean;
@@ -40,7 +39,7 @@ const Index: NextPage<Props> = () => {
       render: (_, record) => {
         return (
           <div className="flex gap-3">
-            <img className="max-w-[5rem] rounded-2xl" src={record.logo} alt="" />
+            <img className="max-w-[5rem] rounded-2xl border" src={record.logo} alt="" />
             <Link href={`/admin/club/${record.id}`} className="flex flex-col justify-center">{record.name}</Link>
           </div>
         );
@@ -86,7 +85,7 @@ const Index: NextPage<Props> = () => {
 
   return (
     <>
-      <div className="mx-auto flex max-w-6xl flex-col gap-5 px-3 py-3">
+      <div className="flex flex-col gap-5">
         <div className="flex items-center justify-between">
           <Table dataSource={getAllClub.data} columns={columns} className="w-full" />
         </div>
