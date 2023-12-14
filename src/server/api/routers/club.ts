@@ -48,6 +48,44 @@ export const clubRouter = createTRPCRouter({
 
       return clubs.map((club) => ({ ...club, likes: club.likes.length }));
     }),
+  getClub: publicProcedure.input(z.string()).mutation(async ({ input }) => {
+    const club = await prisma.club.findUnique({
+      where: {
+        id: input,
+      },
+      select: {
+        name: true,
+        logo: true,
+        views: true,
+        id: true,
+        detail: true,
+        campus: {
+          select: {
+            name: true,
+          },
+        },
+        likes: {
+          select: {
+            likeId: true,
+          },
+        },
+        type: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!club) {
+      throw new Error("Club not found");
+    }
+
+    return {
+      ...club,
+      likes: club.likes.length,
+    };
+  }),
   addClub: protectedProcedure
     .input(
       z.object({
@@ -398,5 +436,29 @@ export const clubRouter = createTRPCRouter({
     });
 
     return club?.likes.length;
+  }),
+  getStatistics: protectedProcedure.input(z.string()).query(async ({ input, ctx }) => {
+    if (!(await checkCanEdit(input, ctx.session.user.email!))) {
+      throw new Error("You can't edit this club");
+    }
+
+    const club = await prisma.club.findUnique({
+      where: {
+        id: input,
+      },
+      select: {
+        views: true,
+        likes: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    return {
+      views: club?.views,
+      likes: club?.likes.length,
+    };
   }),
 });

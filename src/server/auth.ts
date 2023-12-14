@@ -11,6 +11,8 @@ declare module "next-auth" {
     user: {
       id: string;
       isAdmin: boolean;
+      owner: string[];
+      editor: string[];
     } & DefaultSession["user"];
   }
 }
@@ -18,6 +20,8 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     isAdmin: boolean;
+    owner: string[];
+    editor: string[];
   }
 }
 
@@ -30,6 +34,8 @@ export const authOptions: NextAuthOptions = {
       if (session.user && token.sub) {
         session.user.id = token.sub;
         session.user.isAdmin = token.isAdmin;
+        session.user.owner = token.owner;
+        session.user.editor = token.editor;
       }
       return session;
     },
@@ -37,6 +43,10 @@ export const authOptions: NextAuthOptions = {
       const userData = await prisma.user.findUnique({
         where: {
           email: token.email!,
+        },
+        include: {
+          myClubs: true,
+          editor: true,
         },
       });
 
@@ -47,7 +57,11 @@ export const authOptions: NextAuthOptions = {
       }
 
       return {
-        ...userData,
+        ...{
+          ...userData,
+          owner: userData.myClubs.map((club) => club.id),
+          editor: userData.editor.map((club) => club.id),
+        },
         ...token,
       };
     },

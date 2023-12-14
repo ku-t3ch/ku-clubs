@@ -2,12 +2,23 @@ import { getToken } from "next-auth/jwt";
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 import { prisma } from "./server/db";
+import checkHasAccessByPathname from "./utils/checkHasAccessByPathname";
 
 export default withAuth(
   async function middleware(req) {
-    if (req.nextauth.token && req.nextUrl.pathname.startsWith("/admin")) {
-      const token = await getToken({ req, secret: process.env.SECRET });
+    const { pathname } = req.nextUrl;
+    const token = await getToken({ req, secret: process.env.SECRET });
+
+    if (req.nextauth.token && pathname.startsWith("/admin")) {
       if (token?.isAdmin) {
+        return NextResponse.next();
+      }
+      return NextResponse.rewrite(new URL("/404", req.url));
+    }
+    
+    if (req.nextauth.token && pathname.endsWith("/setting") && pathname.startsWith("/my-clubs/")) {
+      const result = checkHasAccessByPathname(token?.owner!, pathname);
+      if (result) {
         return NextResponse.next();
       }
       return NextResponse.rewrite(new URL("/404", req.url));
@@ -26,5 +37,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/club/add", "/my-clubs", "/my-account", "/club/edit/:path*", "/admin/:path*"],
+  matcher: ["/club/add", "/my-clubs/:path*", "/my-account", "/club/edit/:path*", "/admin/:path*"],
 };

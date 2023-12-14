@@ -1,3 +1,4 @@
+import BackButton from "@/components/common/BackButton";
 import { Button } from "@/components/form/Button";
 import { Input } from "@/components/form/Input";
 import Label from "@/components/form/Label";
@@ -151,7 +152,8 @@ const Add: NextPage<Props> = () => {
 
   return (
     <>
-      <div className="mx-auto flex flex-col gap-5 ">
+      <div className="mx-auto max-w-6xl flex flex-col gap-5 ">
+        <BackButton />
         <div className="flex items-center justify-between">
           <div className="text-3xl font-bold">เพิ่มชมรม</div>
           {/* <div className="flex gap-1">
