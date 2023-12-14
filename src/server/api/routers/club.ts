@@ -311,7 +311,7 @@ export const clubRouter = createTRPCRouter({
         },
       });
 
-      if (!checkOwner) {
+      if (checkOwner?.owner.email !== ctx.session.user.email) {
         throw new Error("you are not owner");
       }
 
