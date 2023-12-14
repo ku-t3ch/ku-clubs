@@ -10,6 +10,7 @@
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate dev",
+    "prod:db:deploy": "npx prisma migrate deploy",
     "db:seed": "ts-node prisma/seed.ts",
     "db:command:admin": "ts-node prisma/command/updateAdmin.ts",
     "lint": "next lint",
