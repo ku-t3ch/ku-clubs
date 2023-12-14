@@ -45,7 +45,7 @@ const EditClubSetting: NextPage<Props> = ({ clubData }) => {
   };
 
   return (
-    <div className="flex flex-col gap-x-5 md:flex-row">
+    <div className="flex flex-col gap-x-5 md:flex-row w-full">
       <Form className="flex w-full flex-col gap-x-5 md:flex-row" layout="vertical">
         <Form.Item label="เผยแพร่">
           <Switch

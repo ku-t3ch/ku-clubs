@@ -35,7 +35,7 @@ const MyClubs: NextPage<Props> = () => {
 
   return (
     <>
-      <div className="flex w-full flex-col gap-5">
+      <div className="flex w-full flex-col gap-5 max-w-6xl mx-auto">
         <div className="flex w-full flex-col justify-between gap-5">
           <div className="flex items-center justify-between">
             <div className="text-3xl font-bold">ชมรมของฉัน</div>
@@ -65,7 +65,7 @@ const MyClubs: NextPage<Props> = () => {
                         <img className="max-w-[5rem] rounded-2xl" src={club.logo} alt="" />
                         <div className="flex flex-col justify-center">
                           <Link
-                            href={`/club/${club.id}`}
+                            href={`/my-clubs/${club.id}`}
                             className="font-bold hover:cursor-pointer hover:underline"
                           >
                             {club.name}{" "}
@@ -83,7 +83,7 @@ const MyClubs: NextPage<Props> = () => {
                       </div>
                       <div className="flex gap-2">
                         <Button
-                          href={`/club/edit/${club.id}`}
+                          href={`/my-clubs/${club.id}/detail`}
                           type="button"
                           color="secondary"
                           className="flex items-center gap-1"

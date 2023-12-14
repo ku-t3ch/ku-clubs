@@ -1,12 +1,36 @@
 import WithNavbar from "@/layouts/WithNavbar";
 import WithNavbarAdmin from "@/layouts/WithNavbarAdmin";
 import WithNavbarEditor from "@/layouts/WithNavbarEditor";
+import { ItemType, MenuItemType } from "antd/es/menu/hooks/useItems";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
-import { type ReactNode, createContext } from "react";
+import { type ReactNode, createContext, useState } from "react";
 
-export const NavbarContext = createContext(null);
+export type LayoutContextDataType = {
+    withNavbarContext?: {
+        title?: string;
+        menu?: MenuItemType[];
+    };
+    withNavbarAdminContext?: {
+        title?: string;
+        menu?: MenuItemType[];
+    };
+    withNavbarEditorContext?: {
+        title?: string;
+        menu?: MenuItemType[];
+    };
+}
+
+export type LayoutContextType = {
+    DataContext: LayoutContextDataType | undefined,
+    setDataContext: React.Dispatch<React.SetStateAction<LayoutContextDataType | undefined>>
+};
+
+export const LayoutContext = createContext<LayoutContextType>({
+    DataContext: undefined,
+    setDataContext: () => { }
+});
 
 interface Props {
     children: ReactNode;
@@ -27,11 +51,26 @@ const withNavbar: {
             path: "/explore",
         },
         {
-            path: "/add-club",
+            path: "/my-clubs",
+        },
+        {
+            path: "/my-clubs/[id]",
             editorOnly: true,
         },
         {
-            path: "/my-clubs",
+            path: "/my-clubs/[id]/detail",
+            editorOnly: true,
+        },
+        {
+            path: "/my-clubs/[id]/permission",
+            editorOnly: true,
+        },
+        {
+            path: "/my-clubs/[id]/publish",
+            editorOnly: true,
+        },
+        {
+            path: "/my-clubs/[id]/setting",
             editorOnly: true,
         },
         {
@@ -41,12 +80,7 @@ const withNavbar: {
             path: "/club/[id]",
         },
         {
-            path: "/club/edit/[id]",
-            editorOnly: true,
-        },
-        {
             path: "/club/add",
-            editorOnly: true,
         },
         {
             path: "/admin",
@@ -73,8 +107,9 @@ const withNavbar: {
         }
     ];
 
-export const NavbarContextProvider: NextPage<Props> = ({ children }) => {
+export const LayoutContextProvider: NextPage<Props> = ({ children }) => {
     const { pathname } = useRouter();
+    const [DataContext, setDataContext] = useState<LayoutContextDataType>()
 
     const reder: string = withNavbar.map((item) => {
         if (item.path === pathname) {
@@ -89,11 +124,11 @@ export const NavbarContextProvider: NextPage<Props> = ({ children }) => {
     }).find((role) => role !== undefined) || "blank";
 
     return (
-        <NavbarContext.Provider value={null}>
+        <LayoutContext.Provider value={{ DataContext, setDataContext }}>
             {reder === "public" && <WithNavbar>{children}</WithNavbar>}
             {reder === "admin" && <WithNavbarAdmin>{children}</WithNavbarAdmin>}
             {reder === "editor" && <WithNavbarEditor>{children}</WithNavbarEditor>}
             {reder === "blank" && children}
-        </NavbarContext.Provider>
+        </LayoutContext.Provider>
     );
 };

@@ -79,7 +79,7 @@ const EditClubEditor: NextPage<Props> = ({ clubData }) => {
   };
 
   return (
-    <div className="flex flex-col gap-x-5 md:flex-row">
+    <div className="flex flex-col gap-x-5 md:flex-row w-full">
       <Form layout="vertical" className="relative flex w-full flex-col rounded-md ">
         <div className="flex justify-between">
           <div className="mb-5 text-xl font-bold">Owner is {clubData?.owner.email}</div>

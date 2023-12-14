@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-import { Layout, Menu, Button, theme, ConfigProvider } from 'antd';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Layout, Menu, Button, theme, ConfigProvider, Spin } from 'antd';
 import { NextPage } from 'next';
-import { ChevronLeftIcon, PlusIcon, UsersRoundIcon } from 'lucide-react';
+import { CalendarDaysIcon, ChevronLeftIcon, GaugeIcon, GlobeIcon, LockIcon, PenIcon, PlusIcon, SettingsIcon, UsersRoundIcon } from 'lucide-react';
 import { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
+import { LayoutContext } from '@/contexts/LayoutContext';
+import checkHasAccessByPathname from '@/utils/checkHasAccessByPathname';
+import { useSession } from 'next-auth/react';
+import { api } from '@/utils/api';
+import useEditorStore from '@/store/useEditorStore';
 const { Sider, Content } = Layout;
 
 const HeaderComponent = dynamic(() => import('@/components/common/Editor/HeaderComponentEditor'), { ssr: false })
@@ -15,30 +20,102 @@ interface Props {
 }
 
 const WithNavbarEditor: NextPage<Props> = ({ children }) => {
-    const { push, back } = useRouter()
+    const { push, back, query, pathname, asPath } = useRouter()
+    const clubDetailApi = api.club.getClub.useMutation()
+    const { data: session, status } = useSession()
     const [collapsed, setCollapsed] = useState(false);
+    const { setHeader } = useEditorStore(state => state)
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
+    useEffect(() => {
+        if (query.id) {
+            clubDetailApi.mutate(query.id as string, {
+                onSuccess: (data) => {
+                    setHeader(data)
+                }
+            })
+        }
+    }, [query.id])
+
+    if (status === "loading") return <div className='flex min-h-screen justify-center items-center'>
+        <div className='flex flex-col items-center gap-2'>
+            <Spin tip="Loading" size="large" />
+            <div className='text-lg'>กำลังโหลด...</div>
+        </div>
+    </div>
+
+
+
+    const checkResult = checkHasAccessByPathname(session?.user.owner!, asPath)
+    const ItemsOwnerOnly: ItemType<MenuItemType>[] = checkResult ? [
+        {
+            key: `/my-clubs/[id]/setting`,
+            icon: <SettingsIcon size={20} />,
+            label: 'ตั้งค่า',
+            onClick: () => push(`/my-clubs/${query.id}/setting`),
+        },
+    ] : []
+
     const Items: ItemType<MenuItemType>[] = [
+
         {
-            key: '/my-clubs',
-            icon: <UsersRoundIcon size={15} />,
-            label: 'ชมรมของฉัน',
-            onClick: () => push('/my-clubs'),
+            key: `/my-clubs/[id]`,
+            icon: <GaugeIcon size={20} />,
+            label: 'Dashboard',
+            onClick: () => push(`/my-clubs/${query.id}`),
+        },
+        // {
+        //     type: "divider"
+        // },
+        {
+            key: `/my-clubs/[id]/events`,
+            icon: <CalendarDaysIcon size={20} />,
+            label: 'จัดการอีเว้นท์',
+            disabled: true,
+            children: [
+                {
+                    key: `/my-clubs/[id]/events`,
+                    icon: <CalendarDaysIcon size={20} />,
+                    label: 'อีเว้นท์ทั้งหมด',
+                    onClick: () => push(`/my-clubs/${query.id}`),
+                    disabled: true,
+                },
+                {
+                    key: `/my-clubs/[id]/events/create`,
+                    icon: <PlusIcon size={20} />,
+                    label: 'เพิ่มอีเว้นท์',
+                    onClick: () => push(`/my-clubs/${query.id}`),
+                    disabled: true,
+                }
+            ]
         },
         {
-            key: '/club/add',
-            icon: <PlusIcon size={15} />,
-            label: 'เพิ่มชมรม',
-            onClick: () => push('/club/add'),
+            key: `/my-clubs/[id]/detail`,
+            icon: <PenIcon size={20} />,
+            label: 'แก้ไขชมรม',
+            onClick: () => push(`/my-clubs/${query.id}/detail`),
         },
+        {
+            key: `/my-clubs/[id]/permission`,
+            icon: <LockIcon size={20} />,
+            label: 'สิทธิ์การแก้ไข',
+            onClick: () => push(`/my-clubs/${query.id}/permission`),
+        },
+        {
+            key: `/my-clubs/[id]/publish`,
+            icon: <GlobeIcon size={20} />,
+            label: 'เผยแพร่',
+            onClick: () => push(`/my-clubs/${query.id}/publish`),
+        },
+        ...ItemsOwnerOnly,
     ]
 
     const toExpore = () => {
-        push('/explore')
+        push('/my-clubs')
     }
+
 
     return (
         <Layout className='min-h-screen'>
@@ -70,8 +147,9 @@ const WithNavbarEditor: NextPage<Props> = ({ children }) => {
                     <Menu
                         theme="dark"
                         mode="inline"
-                        defaultSelectedKeys={['1']}
+                        defaultSelectedKeys={[pathname]}
                         items={Items}
+                        className=''
                     />
                 </Sider>
             </ConfigProvider>

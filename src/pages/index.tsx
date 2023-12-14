@@ -1,14 +1,10 @@
 
 import Band from "@/components/common/Band";
-import { NavbarContext } from "@/contexts/NavbarContext";
-import { Icon } from "@iconify/react";
 import { ChevronRightIcon } from "lucide-react";
 import { type NextPage } from "next";
 import Link from "next/link";
-import { useContext } from "react";
 
 const Home: NextPage = () => {
-    const test = useContext(NavbarContext);
     const title = "คุณกำลังมองหา ชมรมอยู่ใช่ไหม";
     const description = "เว็บเราคือแหล่งรวบรวมชมรมต่าง ๆ ในมหาวิทยาลัยเกษตรศาสตร์ ทุกวิทยาเขต เพื่อน ๆ ทุกคนสามารถค้นหาชมรมที่โดนใจได้";
 

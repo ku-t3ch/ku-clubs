@@ -2,7 +2,7 @@ import BackButton from "@/components/common/BackButton";
 import ClubNotFound from "@/components/common/ClubNotFound";
 import Stat from "@/components/common/Stat";
 import { prisma } from "@/server/db";
-import { Campus, Club } from "@prisma/client";
+import { Campus, Club as ClubType } from "@prisma/client";
 import { sanitize } from "isomorphic-dompurify";
 import { NextPage, NextPageContext } from "next";
 import { getToken } from "next-auth/jwt";
@@ -64,7 +64,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
 interface Props {
     id: string | null;
     clubData:
-    | (Club & {
+    | (ClubType & {
         campus: Campus;
         likes: {
             id: string;
