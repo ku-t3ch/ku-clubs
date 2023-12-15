@@ -4,14 +4,16 @@ async function constraintImage({
   buffer,
   width,
   height,
-  quality = 100,
+  quality = 82,
   drop = 2,
+  fileLimit,
 }: {
   buffer: Buffer;
   width?: number;
   height?: number;
   quality?: number;
   drop?: number;
+  fileLimit?: number;
 }): Promise<Buffer> {
   try {
     const { width: originalWidth, height: originalHeight } = await sharp(buffer).metadata();
@@ -26,7 +28,7 @@ async function constraintImage({
       })
       .toBuffer();
 
-    if (processedImage.byteLength > 1 * 1e6) {
+    if (processedImage.byteLength > 1 * (fileLimit ? fileLimit * 1024 * 1024 : 1024 * 1024)) {
       // If the image size exceeds 1 MB, recursively reduce dimensions
       return constraintImage({
         buffer,
