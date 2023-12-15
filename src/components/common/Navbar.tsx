@@ -69,7 +69,7 @@ const Navbar: NextPage<Props> = () => {
 
     return (
         <div className="px-5">
-            <div className="mx-auto flex w-full max-w-6xl flex-col py-5 bg-white">
+            <div className="mx-auto flex w-full max-w-6xl flex-col py-5 ">
                 {/* Desktop Screen Session */}
                 <div className="hidden flex-col gap-10 md:flex">
                     <div className="flex justify-between">
