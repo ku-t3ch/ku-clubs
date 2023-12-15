@@ -14,6 +14,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "@/server/auth";
 import { prisma } from "@/server/db";
+import { NextApiRequest } from "next";
 
 /**
  * 1. CONTEXT
@@ -25,6 +26,7 @@ import { prisma } from "@/server/db";
 
 type CreateContextOptions = {
   session: Session | null;
+  req: NextApiRequest;
 };
 
 /**
@@ -41,6 +43,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
     prisma,
+    req: opts.req,
   };
 };
 
@@ -58,6 +61,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   return createInnerTRPCContext({
     session,
+    req,
   });
 };
 

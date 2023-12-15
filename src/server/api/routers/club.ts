@@ -117,7 +117,11 @@ export const clubRouter = createTRPCRouter({
           new PutObjectCommand({
             Bucket: clubBucket,
             Key: `logo/${logoKeyPath}`,
-            Body: await constraintImage(Buffer.from(logoBase64!, "base64"), 500, 500),
+            Body: await constraintImage({
+              buffer: Buffer.from(logoBase64!, "base64"),
+              width: 500,
+              height: 500,
+            }),
           })
         );
 
@@ -264,7 +268,11 @@ export const clubRouter = createTRPCRouter({
           new PutObjectCommand({
             Bucket: clubBucket,
             Key: owner.logo.split(clubBucket)[1],
-            Body: await constraintImage(Buffer.from(logoBase64!, "base64"), 500, 500),
+            Body: await constraintImage({
+                buffer: Buffer.from(logoBase64!, "base64"),
+                width: 500,
+                height: 500,
+            }),
           })
         );
 

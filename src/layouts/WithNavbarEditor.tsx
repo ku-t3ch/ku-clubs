@@ -66,28 +66,22 @@ const WithNavbarEditor: NextPage<Props> = ({ children }) => {
             label: 'Dashboard',
             onClick: () => push(`/my-clubs/${query.id}`),
         },
-        // {
-        //     type: "divider"
-        // },
         {
             key: `/my-clubs/[id]/events`,
             icon: <CalendarDaysIcon size={20} />,
             label: 'จัดการอีเว้นท์',
-            disabled: true,
             children: [
                 {
                     key: `/my-clubs/[id]/events`,
                     icon: <CalendarDaysIcon size={20} />,
                     label: 'อีเว้นท์ทั้งหมด',
-                    onClick: () => push(`/my-clubs/${query.id}`),
-                    disabled: true,
+                    onClick: () => push(`/my-clubs/${query.id}/events`),
                 },
                 {
                     key: `/my-clubs/[id]/events/create`,
                     icon: <PlusIcon size={20} />,
                     label: 'เพิ่มอีเว้นท์',
-                    onClick: () => push(`/my-clubs/${query.id}`),
-                    disabled: true,
+                    onClick: () => push(`/my-clubs/${query.id}/events/create`),
                 }
             ]
         },

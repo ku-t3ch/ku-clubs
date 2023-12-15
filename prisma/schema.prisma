@@ -106,14 +106,28 @@ model ClubType {
 }
 
 model Event {
-    id     String   @id @default(cuid())
-    name   String
-    detail String
-    cover  String?
-    start  DateTime
-    end    DateTime
-    club   Club     @relation(fields: [clubId], references: [id])
-    clubId String
+    id         String           @id @default(cuid())
+    name       String
+    detail     String
+    cover      String?
+    start      DateTime
+    end        DateTime
+    types      EventType[]
+    categories EventCategorie[]
+    club       Club             @relation(fields: [clubId], references: [id])
+    clubId     String
+}
+
+model EventCategorie {
+    id    String  @id @default(cuid())
+    name  String
+    event Event[]
+}
+
+model EventType {
+    id    String  @id @default(cuid())
+    name  String
+    event Event[]
 }
 
 model Post {

@@ -58,6 +58,14 @@ const withNavbar: {
             editorOnly: true,
         },
         {
+            path: "/my-clubs/[id]/events",
+            editorOnly: true,
+        },
+        {
+            path: "/my-clubs/[id]/events/create",
+            editorOnly: true,
+        },
+        {
             path: "/my-clubs/[id]/detail",
             editorOnly: true,
         },

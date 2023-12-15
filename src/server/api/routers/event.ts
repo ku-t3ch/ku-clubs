@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import _, { update } from "lodash";
 import checkCanEdit from "@/utils/checkCanEdit";
-import { createEvent, updateEvent } from "@/services/event";
+import { createEvent, updateEvent } from "@/services/eventService";
 
 export const clubRouter = createTRPCRouter({
   createEvent: createEvent,
