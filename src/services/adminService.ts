@@ -47,3 +47,34 @@ export const transferOwnership = protectedProcedureAdmin
 
     return true;
   });
+
+const removeUserZod = z.object({
+  email: z.string(),
+});
+
+export const removeUser = protectedProcedureAdmin.input(removeUserZod).mutation(async ({ input, ctx }) => {
+    const { email } = input;
+    const { prisma } = ctx;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    await prisma.user.delete({
+      where: {
+        email,
+      },
+      include: {
+        sessions: true,
+        accounts: true,
+      },
+    });
+
+    return true;
+  });
