@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedureAdmin } from "@/server/api/trpc";
 import { prisma } from "@/server/db";
+import { transferOwnership } from "@/services/clubService";
 
 export const adminRouter = createTRPCRouter({
   getAllClubs: protectedProcedureAdmin.query(async () => {
@@ -11,6 +12,7 @@ export const adminRouter = createTRPCRouter({
       },
     });
   }),
+  transferOwnership: transferOwnership,
   getAllUsers: protectedProcedureAdmin.query(async () => {
     return await prisma.user.findMany();
   }),
