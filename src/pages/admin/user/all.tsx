@@ -4,31 +4,33 @@ import { Button, Input, InputRef, Modal, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { NextPage } from 'next'
 import { User } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 
 interface Props { }
 
 const All: NextPage<Props> = () => {
+    const { data: session } = useSession();
     const getAllUsers = api.admin.getAllUsers.useQuery();
-    const removeClubs = api.admin.removeClub.useMutation();
+    const removeUserApi = api.admin.removeUser.useMutation();
 
-    const onDeleteClub = async (id: string) => {
-        if (!id) return;
-        
+    const onDeleteUser = async (email: string) => {
+        if (!email) return;
+
         Modal.confirm({
-            title: "Delete club",
-            content: "Are you sure to delete this club?",
+            title: "Delete User",
+            content: "Are you sure to delete this user?",
             onOk: () => {
-                const key = toast.loading("Delete club...");
-                removeClubs.mutate({ id: id }, {
+                const key = toast.loading("Delete user...");
+                removeUserApi.mutate({ email: email }, {
                     onSuccess: () => {
                         getAllUsers.refetch();
-                        toast.success("Delete club success", {
+                        toast.success("Delete user success", {
                             id: key
                         });
                     },
                     onError: (err) => {
-                        toast.error("Delete club failed", {
+                        toast.error("Delete user failed", {
                             id: key
                         });
                     }
@@ -40,44 +42,54 @@ const All: NextPage<Props> = () => {
     }
 
     const columns: ColumnsType<User> = [
-            {
-                title: "Name",
-                dataIndex: "name",
-                key: "name",
-                render: (_, record) => {
-                    return (
-                        <div className="flex gap-3">
-                            <img className="max-w-[3rem] rounded-2xl" src={record.image!} alt="" />
-                            <div className="flex flex-col justify-center">{record.name}</div>
-                        </div>
-                    );
-                },
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+            render: (_, record) => {
+                return (
+                    <div className="flex gap-3">
+                        <img className="max-w-[3rem] rounded-2xl" src={record.image!} alt="" />
+                        <div className="flex flex-col justify-center">{record.name}</div>
+                    </div>
+                );
             },
-            {
-                title: "Email",
-                dataIndex: "email",
-                render: (_, record) => {
-                    return <div className="flex gap-3">{record.email}</div>;
-                },
+        },
+        {
+            title: "Email",
+            dataIndex: "email",
+            render: (_, record) => {
+                return <div className="flex gap-3">{record.email}</div>;
             },
-            // {
-            //     title: "Verified",
-            //     dataIndex: "verified",
-            //     render: (_, record) => {
-            //         return <div className="flex gap-3">{record.approved ? "true" : "false"}</div>;
-            //     },
-            // },
-            // {
-            //     title: "Action",
-            //     render: (_, record) => {
-            //         return (
-            //             <div className="flex gap-3">
-            //                 <Button danger loading={removeClubs.isLoading} onClick={() => onDeleteClub(record.id)} type="primary">Delete</Button>
-            //             </div>
-            //         );
-            //     },
-            // },
-        ];
+        },
+        {
+            title: "Action",
+            render: (_, record) => {
+                return (
+                    <div className="flex gap-3">
+                        <Button danger disabled={session?.user.email === record.email} loading={removeUserApi.isLoading} onClick={() => onDeleteUser(record.email!)} type="primary">Delete</Button>
+                    </div>
+                );
+            },
+        },
+        // {
+        //     title: "Verified",
+        //     dataIndex: "verified",
+        //     render: (_, record) => {
+        //         return <div className="flex gap-3">{record.approved ? "true" : "false"}</div>;
+        //     },
+        // },
+        // {
+        //     title: "Action",
+        //     render: (_, record) => {
+        //         return (
+        //             <div className="flex gap-3">
+        //                 <Button danger loading={removeClubs.isLoading} onClick={() => onDeleteClub(record.id)} type="primary">Delete</Button>
+        //             </div>
+        //         );
+        //     },
+        // },
+    ];
 
     return (
         <>

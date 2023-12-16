@@ -13,6 +13,9 @@
     "prod:db:deploy": "npx prisma migrate deploy",
     "db:seed": "ts-node prisma/seed.ts",
     "db:command:admin": "ts-node prisma/command/updateAdmin.ts",
+    "db:command:user": "ts-node prisma/command/removeUser.ts",
+    "prod:db:command:admin": "npx ts-node prisma/command/updateAdmin.ts",
+    "prod:db:command:user": "npx ts-node prisma/command/removeUser.ts",
     "lint": "next lint",
     "start": "next start"
   },
