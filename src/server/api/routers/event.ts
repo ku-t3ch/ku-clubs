@@ -9,9 +9,16 @@ import { v4 as uuidv4 } from "uuid";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import _, { update } from "lodash";
 import checkCanEdit from "@/utils/checkCanEdit";
-import { createEvent, updateEvent } from "@/services/eventService";
+import {
+  createEvent,
+  updateEvent,
+  getEventCategorie,
+  getEventTypes,
+} from "@/services/eventService";
 
-export const clubRouter = createTRPCRouter({
+export const eventRouter = createTRPCRouter({
   createEvent: createEvent,
   updateEvent: updateEvent,
+  getEventCategorie: getEventCategorie,
+  getEventTypes: getEventTypes,
 });

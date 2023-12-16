@@ -120,13 +120,13 @@ model Event {
 
 model EventCategorie {
     id    String  @id @default(cuid())
-    name  String
+    name  String  @unique
     event Event[]
 }
 
 model EventType {
     id    String  @id @default(cuid())
-    name  String
+    name  String  @unique
     event Event[]
 }
 

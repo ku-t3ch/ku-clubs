@@ -3,6 +3,7 @@ import { campusRouter } from "./routers/campus";
 import { clubtypeRouter } from "./routers/clubtype";
 import { clubRouter } from "./routers/club";
 import { adminRouter } from "./routers/admin";
+import { eventRouter } from "./routers/event";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   clubtype: clubtypeRouter,
   club: clubRouter,
   admin: adminRouter,
+  event: eventRouter,
 });
 
 // export type definition of API

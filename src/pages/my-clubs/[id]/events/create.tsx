@@ -8,6 +8,10 @@ import { NextPage } from 'next'
 interface Props { }
 
 const Create: NextPage<Props> = () => {
+    const [form] = Form.useForm()
+    const onFinish = (values: any) => {
+        console.log(form.getFieldsValue());
+    }
     return (
         <>
             <div className="mx-auto flex max-w-6xl flex-col gap-5 py-3">
@@ -16,11 +20,11 @@ const Create: NextPage<Props> = () => {
                         <div className="text-3xl font-bold">เพิ่มอีเว้นท์</div>
                     </div>
                 </div>
-                <Form layout='vertical' className='flex flex-col gap-10'>
+                <Form form={form} onFinish={onFinish} layout='vertical' className='flex flex-col gap-10'>
                     <DetailEvent />
                     <DataAndTimeEvent />
                     <LocationEvent />
-                    <Button type='primary' className='w-fit' size='large'>บันทึก</Button>
+                    <Button type='primary' htmlType='submit' className='w-fit' size='large'>บันทึก</Button>
                 </Form>
 
             </div>

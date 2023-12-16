@@ -27,3 +27,13 @@ export const createEvent = protectedProcedure.input(createEventInputZod).mutatio
 export const updateEvent = protectedProcedure.mutation(({ ctx }) => {});
 
 export const removeEvent = protectedProcedure.mutation(({ ctx }) => {});
+
+export const getEventCategorie = protectedProcedure.query(({ ctx }) => {
+  const { prisma } = ctx;
+  return prisma.eventCategorie.findMany();
+});
+
+export const getEventTypes = protectedProcedure.query(({ ctx }) => {
+  const { prisma } = ctx;
+  return prisma.eventType.findMany();
+});
