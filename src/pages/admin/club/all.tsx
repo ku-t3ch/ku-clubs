@@ -1,8 +1,9 @@
 import { transferOwnership } from '@/services/clubService';
 import { api } from '@/utils/api';
 import { Club } from '@prisma/client';
-import { Button, Input, InputRef, Modal, Table } from 'antd';
+import { Badge, Button, Input, InputRef, Modal, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { CheckIcon } from 'lucide-react';
 import { NextPage } from 'next'
 import { User } from 'next-auth';
 import { useRef } from 'react';
@@ -111,7 +112,15 @@ const All: NextPage<Props> = () => {
                 title: "Verified",
                 dataIndex: "verified",
                 render: (_, record) => {
-                    return <div className="flex gap-3">{record.approved ? "true" : "false"}</div>;
+                    return (
+                        <div className="flex gap-3">
+                            {record.approved ? (
+                                <Badge count="ผ่าน" color="#00c00a" />
+                            ) : (
+                                <Badge count="รอการตรวจสอบ" color="#faad14" />
+                            )}
+                        </div>
+                    );
                 },
             },
             {
