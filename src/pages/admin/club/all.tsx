@@ -1,9 +1,7 @@
-import { transferOwnership } from '@/services/clubService';
 import { api } from '@/utils/api';
 import { Club } from '@prisma/client';
-import { Badge, Button, Input, InputRef, Modal, Table, Tag } from 'antd';
+import { Badge, Button, Input, InputRef, Modal, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { CheckIcon } from 'lucide-react';
 import { NextPage } from 'next'
 import { User } from 'next-auth';
 import { useRef } from 'react';
