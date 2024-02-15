@@ -71,7 +71,6 @@ export const removeUser = protectedProcedureAdmin.input(removeUserZod).mutation(
         email,
       },
       include: {
-        sessions: true,
         accounts: true,
       },
     });
