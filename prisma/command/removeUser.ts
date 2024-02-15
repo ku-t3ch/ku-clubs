@@ -19,7 +19,6 @@ const main = async () => {
             email,
           },
           include: {
-            sessions: true,
             accounts: true,
           },
         });
