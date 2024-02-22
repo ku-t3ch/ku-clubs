@@ -81,9 +81,6 @@ const Club: NextPage<Props> = ({ clubData, clicked }) => {
         return <ClubNotFound />;
     }
 
-    // let clean = sanitize(clubData.detail);
-    // const mdxSource = serialize(mdxContent)
-
     const shortDescription = (description: string) => {
         return description.length > 100 ? description.substring(0, 100).replaceAll("\n", "") + "..." : description.replaceAll("\n", "");
     };
@@ -137,7 +134,6 @@ const Club: NextPage<Props> = ({ clubData, clicked }) => {
                 </div>
                 <hr />
                 <RenderMarkdown content={clubData.detail} />
-                {/* <div className="prose" dangerouslySetInnerHTML={{ __html: clean }}></div> */}
             </div>
         </>
     );

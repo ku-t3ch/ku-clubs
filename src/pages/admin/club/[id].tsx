@@ -75,7 +75,6 @@ const Club: NextPage<Props> = ({ clubData }) => {
                 </div>
                 <hr />
                 <RenderMarkdown content={clubData.detail} />
-                {/* <div className="prose" dangerouslySetInnerHTML={{ __html: clean }}></div> */}
             </div>
         </>
     );

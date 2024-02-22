@@ -73,7 +73,7 @@ const RichTextEditor: NextPage<Props> = ({ onChange, initialValue, error }) => {
     return (
         <>
             {error && <span className="text-red-500">*{error}</span>}
-            <MDXEditor className="border relative overflow-hidden rounded-xl prose" ref={ref} markdown={initialValue ?? ""} plugins={[
+            {/* <MDXEditor className="border relative overflow-hidden rounded-xl prose" ref={ref} markdown={initialValue ?? ""} plugins={[
                 toolbarPlugin({
                     toolbarContents: () => <DiffSourceToggleWrapper>
                         <UndoRedo />
@@ -111,14 +111,13 @@ const RichTextEditor: NextPage<Props> = ({ onChange, initialValue, error }) => {
                 markdownShortcutPlugin()
             ]}
 
-                onChange={onChange} />
-            {/* 
+                onChange={onChange} /> */}
+            
             <Editor
                 tinymceScriptSrc={"/tinymce/tinymce.min.js"}
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 value={initialValue}
-                // onEditorChange={(evt, editor) => onChange && onChange(editor.getContent())}
-                onEditorChange={(evt, editor) => onChange && console.log(editor.getDoc())}
+                onEditorChange={(evt, editor) => onChange && onChange(editor.getContent())}
 
                 init={{
                     branding: false,
@@ -138,23 +137,9 @@ const RichTextEditor: NextPage<Props> = ({ onChange, initialValue, error }) => {
                     images_upload_url: "/api/attachments",
                     automatic_uploads: true,
                     images_reuse_filename: true,
-                    textpattern_patterns: [
-                        { start: '*', end: '*', format: 'italic' },
-                        { start: '**', end: '**', format: 'bold' },
-                        { start: '#', format: 'h1' },
-                        { start: '##', format: 'h2' },
-                        { start: '###', format: 'h3' },
-                        { start: '####', format: 'h4' },
-                        { start: '#####', format: 'h5' },
-                        { start: '######', format: 'h6' },
-                        { start: '1. ', cmd: 'InsertOrderedList' },
-                        { start: '* ', cmd: 'InsertUnorderedList' },
-                        { start: '- ', cmd: 'InsertUnorderedList' },
-                        { start: '//brb', replacement: 'Be Right Back' }
-                    ],
                     images_upload_handler: handleImageUpload
                 }}
-            /> */}
+            />
         </>
     );
 };
