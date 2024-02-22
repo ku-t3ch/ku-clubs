@@ -3,6 +3,9 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from "tinymce";
 import { useRef } from "react";
 import axios, { AxiosRequestConfig } from 'axios';
+import { BlockTypeSelect, BoldItalicUnderlineToggles, ChangeCodeMirrorLanguage, CodeToggle, ConditionalContents, CreateLink, DiffSourceToggleWrapper, InsertCodeBlock, InsertImage, InsertTable, KitchenSinkToolbar, ListsToggle, MDXEditor, MDXEditorMethods, UndoRedo, codeBlockPlugin, codeMirrorPlugin, frontmatterPlugin, headingsPlugin, imagePlugin, linkDialogPlugin, linkPlugin, listsPlugin, markdownShortcutPlugin, quotePlugin, sandpackPlugin, tablePlugin, thematicBreakPlugin, toolbarPlugin } from "@mdxeditor/editor";
+import '@mdxeditor/editor/style.css'
+import toast from "react-hot-toast";
 
 interface Props {
     onChange?: (content: string) => void;
@@ -50,14 +53,72 @@ const RichTextEditor: NextPage<Props> = ({ onChange, initialValue, error }) => {
         });
     };
 
+    async function imageUploadHandler(image: File) {
+        const formData = new FormData()
+        formData.append('file', image)
+        // send the file to your server and return
+        // the URL of the uploaded image in the response
+        const key = toast.loading('Uploading...')
+        const response = await fetch('/api/attachments', {
+            method: 'POST',
+            body: formData
+        })
+        const json = (await response.json()) as { location: string }
+        toast.success('Uploaded', { id: key })
+        return json.location
+    }
+
+    const ref = useRef<MDXEditorMethods>(null)
+
     return (
         <>
             {error && <span className="text-red-500">*{error}</span>}
+            <MDXEditor className="border relative overflow-hidden rounded-xl prose" ref={ref} markdown={initialValue ?? ""} plugins={[
+                toolbarPlugin({
+                    toolbarContents: () => <DiffSourceToggleWrapper>
+                        <UndoRedo />
+                        <BlockTypeSelect />
+                        <BoldItalicUnderlineToggles />
+                        <CreateLink />
+                        <ListsToggle />
+                        <CodeToggle />
+                        <InsertImage />
+                        <InsertTable />
+                    </DiffSourceToggleWrapper>,
+
+                }),
+                codeMirrorPlugin({
+                    codeBlockLanguages: {
+                        python: "Python",
+                        c: "C",
+                        cpp: "C++",
+                        java: "Java",
+                    },
+                    theme: "light",
+                }),
+                listsPlugin(),
+                quotePlugin(),
+                headingsPlugin(),
+                linkPlugin(),
+                linkDialogPlugin(),
+                imagePlugin({
+                    imageUploadHandler: imageUploadHandler
+                }),
+                tablePlugin(),
+                thematicBreakPlugin(),
+                frontmatterPlugin(),
+                codeBlockPlugin({ defaultCodeBlockLanguage: 'txt' }),
+                markdownShortcutPlugin()
+            ]}
+
+                onChange={onChange} />
+            {/* 
             <Editor
                 tinymceScriptSrc={"/tinymce/tinymce.min.js"}
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 value={initialValue}
-                onEditorChange={(evt, editor) => onChange && onChange(editor.getContent())}
+                // onEditorChange={(evt, editor) => onChange && onChange(editor.getContent())}
+                onEditorChange={(evt, editor) => onChange && console.log(editor.getDoc())}
 
                 init={{
                     branding: false,
@@ -68,7 +129,7 @@ const RichTextEditor: NextPage<Props> = ({ onChange, initialValue, error }) => {
                     max_height: 700,
                     autoresize_bottom_margin: 30,
                     plugins:
-                        "autoresize autolink lists link image searchreplace fullscreen media table code codesample directionality",
+                        "autoresize autolink lists link image searchreplace fullscreen media table code codesample directionality textpattern",
                     toolbar:
                         "blocks | removeformat | alignleft aligncenter alignright  |" +
                         "bold italic underline strikethrough | bullist numlist | link table image media file |" +
@@ -77,9 +138,23 @@ const RichTextEditor: NextPage<Props> = ({ onChange, initialValue, error }) => {
                     images_upload_url: "/api/attachments",
                     automatic_uploads: true,
                     images_reuse_filename: true,
+                    textpattern_patterns: [
+                        { start: '*', end: '*', format: 'italic' },
+                        { start: '**', end: '**', format: 'bold' },
+                        { start: '#', format: 'h1' },
+                        { start: '##', format: 'h2' },
+                        { start: '###', format: 'h3' },
+                        { start: '####', format: 'h4' },
+                        { start: '#####', format: 'h5' },
+                        { start: '######', format: 'h6' },
+                        { start: '1. ', cmd: 'InsertOrderedList' },
+                        { start: '* ', cmd: 'InsertUnorderedList' },
+                        { start: '- ', cmd: 'InsertUnorderedList' },
+                        { start: '//brb', replacement: 'Be Right Back' }
+                    ],
                     images_upload_handler: handleImageUpload
                 }}
-            />
+            /> */}
         </>
     );
 };

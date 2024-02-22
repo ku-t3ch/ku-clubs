@@ -3,10 +3,12 @@ import ClubNotFound from "@/components/common/ClubNotFound";
 import Stat from "@/components/common/Stat";
 import { prisma } from "@/server/db";
 import { Campus, Club as ClubType } from "@prisma/client";
-import { sanitize } from "isomorphic-dompurify";
+// import { sanitize } from "isomorphic-dompurify";
+import ReactMarkdown from 'react-markdown';
 import { NextPage, NextPageContext } from "next";
 import { getToken } from "next-auth/jwt";
 import { NextSeo } from "next-seo";
+import RenderMarkdown from "@/components/RenderMarkdown";
 
 export async function getServerSideProps(ctx: NextPageContext) {
     const { id } = ctx.query;
@@ -79,7 +81,8 @@ const Club: NextPage<Props> = ({ clubData, clicked }) => {
         return <ClubNotFound />;
     }
 
-    let clean = sanitize(clubData.detail);
+    // let clean = sanitize(clubData.detail);
+    // const mdxSource = serialize(mdxContent)
 
     const shortDescription = (description: string) => {
         return description.length > 100 ? description.substring(0, 100).replaceAll("\n", "") + "..." : description.replaceAll("\n", "");
@@ -133,7 +136,8 @@ const Club: NextPage<Props> = ({ clubData, clicked }) => {
                     </div>
                 </div>
                 <hr />
-                <div className="prose" dangerouslySetInnerHTML={{ __html: clean }}></div>
+                <RenderMarkdown content={clubData.detail} />
+                {/* <div className="prose" dangerouslySetInnerHTML={{ __html: clean }}></div> */}
             </div>
         </>
     );

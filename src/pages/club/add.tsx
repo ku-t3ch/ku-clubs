@@ -2,16 +2,17 @@ import BackButton from "@/components/common/BackButton";
 import { Button } from "@/components/form/Button";
 import { Input } from "@/components/form/Input";
 import Label from "@/components/form/Label";
-import RichTextEditor from "@/components/form/RichTextEditor";
 import Select from "@/components/form/Select";
 import UploadFile from "@/components/form/UploadFile";
 import { api } from "@/utils/api";
-import { Icon } from "@iconify/react";
 import { Form } from "antd";
 import { NextPage } from "next";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
+
+const RichTextEditor = dynamic(() => import("@/components/form/RichTextEditor"), { ssr: false });
 
 interface FormBody {
   name: string;

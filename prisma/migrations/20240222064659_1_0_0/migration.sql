@@ -1,13 +1,4 @@
 -- CreateTable
-CREATE TABLE "Example" (
-    "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Example_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -23,16 +14,6 @@ CREATE TABLE "Account" (
     "session_state" TEXT,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Session" (
-    "id" TEXT NOT NULL,
-    "sessionToken" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "expires" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -74,6 +55,10 @@ CREATE TABLE "Club" (
     "detail" TEXT NOT NULL,
     "campusId" TEXT NOT NULL,
     "views" INTEGER NOT NULL DEFAULT 0,
+    "treasurerId" TEXT NOT NULL,
+    "secretaryId" TEXT NOT NULL,
+    "vice_presidentId" TEXT NOT NULL,
+    "presidentId" TEXT NOT NULL,
     "ownerId" TEXT NOT NULL,
     "logo" TEXT NOT NULL,
     "isPublic" BOOLEAN NOT NULL DEFAULT true,
@@ -135,9 +120,6 @@ CREATE TABLE "_ClubEditors" (
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
-
--- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
@@ -151,6 +133,18 @@ CREATE UNIQUE INDEX "Campus_name_key" ON "Campus"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Club_name_key" ON "Club"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Club_treasurerId_key" ON "Club"("treasurerId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Club_secretaryId_key" ON "Club"("secretaryId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Club_vice_presidentId_key" ON "Club"("vice_presidentId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Club_presidentId_key" ON "Club"("presidentId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ClubType_name_key" ON "ClubType"("name");
@@ -171,9 +165,6 @@ CREATE INDEX "_ClubEditors_B_index" ON "_ClubEditors"("B");
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_likeId_fkey" FOREIGN KEY ("likeId") REFERENCES "Club"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -181,6 +172,18 @@ ALTER TABLE "Club" ADD CONSTRAINT "Club_campusId_fkey" FOREIGN KEY ("campusId") 
 
 -- AddForeignKey
 ALTER TABLE "Club" ADD CONSTRAINT "Club_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Club" ADD CONSTRAINT "Club_presidentId_fkey" FOREIGN KEY ("presidentId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Club" ADD CONSTRAINT "Club_vice_presidentId_fkey" FOREIGN KEY ("vice_presidentId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Club" ADD CONSTRAINT "Club_secretaryId_fkey" FOREIGN KEY ("secretaryId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Club" ADD CONSTRAINT "Club_treasurerId_fkey" FOREIGN KEY ("treasurerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Event" ADD CONSTRAINT "Event_clubId_fkey" FOREIGN KEY ("clubId") REFERENCES "Club"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

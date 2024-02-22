@@ -11,12 +11,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
@@ -37,17 +31,21 @@ model Account {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    like          Club?     @relation("ClubLikes", fields: [likeId], references: [id])
-    likeId        String?
-    myClubs       Club[]
-    editor        Club[]    @relation("ClubEditors")
-    isAdmin       Boolean   @default(false)
+    id             String    @id @default(cuid())
+    name           String?
+    email          String?   @unique
+    emailVerified  DateTime?
+    image          String?
+    accounts       Account[]
+    like           Club?     @relation("ClubLikes", fields: [likeId], references: [id])
+    likeId         String?
+    myClubs        Club[]    @relation("OwnerRelation")
+    editor         Club[]    @relation("ClubEditors")
+    isAdmin        Boolean   @default(false)
+    president      Club?     @relation("ClubPresident")
+    vice_president Club?     @relation("ClubVicePresident")
+    secretary      Club?     @relation("ClubSecretaryary")
+    treasurer      Club?     @relation("ClubTreasurer")
 }
 
 model VerificationToken {
@@ -67,25 +65,33 @@ model Campus {
 }
 
 model Club {
-    id          String     @id @default(cuid())
-    createdAt   DateTime   @default(now())
-    updatedAt   DateTime   @updatedAt
-    name        String     @unique
-    detail      String
-    campus      Campus     @relation(fields: [campusId], references: [id])
-    campusId    String
-    type        ClubType[]
-    likes       User[]     @relation("ClubLikes")
-    views       Int        @default(0)
-    owner       User       @relation(fields: [ownerId], references: [id])
-    editor      User[]     @relation("ClubEditors")
-    ownerId     String
-    logo        String
-    events      Event[]
-    posts       Post[]
-    isPublic    Boolean    @default(true)
-    approved    Boolean    @default(false)
-    showOnIndex Boolean    @default(true)
+    id               String     @id @default(cuid())
+    createdAt        DateTime   @default(now())
+    updatedAt        DateTime   @updatedAt
+    name             String     @unique
+    detail           String
+    campus           Campus     @relation(fields: [campusId], references: [id])
+    campusId         String
+    type             ClubType[]
+    likes            User[]     @relation("ClubLikes")
+    views            Int        @default(0)
+    owner            User       @relation("OwnerRelation", fields: [ownerId], references: [id])
+    editor           User[]     @relation("ClubEditors")
+    president        User?      @relation("ClubPresident", fields: [presidentId], references: [id])
+    vice_president   User?      @relation("ClubVicePresident", fields: [vice_presidentId], references: [id])
+    secretary        User?      @relation("ClubSecretaryary", fields: [secretaryId], references: [id])
+    treasurer        User?      @relation("ClubTreasurer", fields: [treasurerId], references: [id])
+    treasurerId      String?    @unique
+    secretaryId      String?    @unique
+    vice_presidentId String?    @unique
+    presidentId      String?    @unique
+    ownerId          String
+    logo             String
+    events           Event[]
+    posts            Post[]
+    isPublic         Boolean    @default(true)
+    approved         Boolean    @default(false)
+    showOnIndex      Boolean    @default(true)
 }
 
 model ClubType {
