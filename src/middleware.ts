@@ -15,13 +15,14 @@ export default withAuth(
       }
       return NextResponse.rewrite(new URL("/404", req.url));
     }
-    
+
     if (req.nextauth.token && pathname.endsWith("/setting") && pathname.startsWith("/my-clubs/")) {
       const result = checkHasAccessByPathname(token?.owner!, pathname);
-      if (result) {
-        return NextResponse.next();
-      }
-      return NextResponse.rewrite(new URL("/404", req.url));
+      //   if (result) {
+      //     return NextResponse.next();
+      //   }
+      //   return NextResponse.rewrite(new URL("/404", req.url));
+      return NextResponse.next();
     }
   },
   {

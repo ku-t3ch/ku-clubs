@@ -32,10 +32,22 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ session, token }) {
       if (session.user && token.sub) {
+        const userData = await prisma.user.findUnique({
+          where: {
+            email: token.email!,
+          },
+          include: {
+            myClubs: true,
+            editor: true,
+          },
+        });
+        if (userData === null) {
+          return session;
+        }
         session.user.id = token.sub;
         session.user.isAdmin = token.isAdmin;
-        session.user.owner = token.owner;
-        session.user.editor = token.editor;
+        session.user.owner = userData.myClubs.map((club) => club.id);
+        session.user.editor = userData.editor.map((club) => club.id);
       }
       return session;
     },
