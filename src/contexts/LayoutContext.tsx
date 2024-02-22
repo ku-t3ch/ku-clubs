@@ -66,6 +66,10 @@ const withNavbar: {
             editorOnly: true,
         },
         {
+            path: "/my-clubs/[id]/management-team",
+            editorOnly: true,
+        },
+        {
             path: "/my-clubs/[id]/publish",
             editorOnly: true,
         },
@@ -111,7 +115,7 @@ export const LayoutContextProvider: NextPage<Props> = ({ children }) => {
     const { pathname } = useRouter();
     const [DataContext, setDataContext] = useState<LayoutContextDataType>()
 
-    const reder: string = withNavbar.map((item) => {
+    const render: string = withNavbar.map((item) => {
         if (item.path === pathname) {
             if (item.adminOnly) {
                 return "admin";
@@ -125,10 +129,10 @@ export const LayoutContextProvider: NextPage<Props> = ({ children }) => {
 
     return (
         <LayoutContext.Provider value={{ DataContext, setDataContext }}>
-            {reder === "public" && <WithNavbar>{children}</WithNavbar>}
-            {reder === "admin" && <WithNavbarAdmin>{children}</WithNavbarAdmin>}
-            {reder === "editor" && <WithNavbarEditor>{children}</WithNavbarEditor>}
-            {reder === "blank" && children}
+            {render === "public" && <WithNavbar>{children}</WithNavbar>}
+            {render === "admin" && <WithNavbarAdmin>{children}</WithNavbarAdmin>}
+            {render === "editor" && <WithNavbarEditor>{children}</WithNavbarEditor>}
+            {render === "blank" && children}
         </LayoutContext.Provider>
     );
 };

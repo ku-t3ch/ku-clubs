@@ -11,18 +11,7 @@ import { Campus, Club, ClubType } from "@prisma/client";
 import toast from "react-hot-toast";
 import { Button } from "../form/Button";
 import { useRouter } from "next/router";
-
-interface Props {
-    id: string | null;
-    clubData:
-    | Club & {
-        campus: Campus;
-        type: ClubType[];
-        likes: {
-            likeId: string | null;
-        }[];
-    };
-}
+import { PropsInterface } from "./PropsInterface";
 
 interface FormBody {
     name: string;
@@ -38,20 +27,20 @@ interface FormBody {
     logo: string;
 }
 
-const EditClubDetail: NextPage<Props> = ({ clubData, id }) => {
+const EditClubDetail: NextPage<PropsInterface> = ({ clubData, id }) => {
     const campusApi = api.campus.getAllCampuses.useQuery();
     const clubTypeApi = api.clubtype.getAllClubTypes.useQuery();
     const { push } = useRouter();
     const updateClub = api.club.updateClub.useMutation();
 
     const [FormBody, setFormBody] = useState<FormBody>({
-        name: clubData.name,
-        detail: clubData.detail,
+        name: clubData?.name,
+        detail: clubData?.detail,
         campus: {
-            value: clubData.campus.id,
-            label: clubData.campus.name,
+            value: clubData?.campus.id,
+            label: clubData?.campus.name,
         },
-        clubType: clubData.type.map((type) => ({
+        clubType: clubData?.type.map((type) => ({
             value: type.id,
             label: type.name,
         })),
@@ -68,13 +57,13 @@ const EditClubDetail: NextPage<Props> = ({ clubData, id }) => {
 
     useEffect(() => {
         (async () => {
-            const base64 = await imageUrlToBase64(clubData.logo);
+            const base64 = await imageUrlToBase64(clubData?.logo!);
             setFormBody((pre) => ({
                 ...pre,
                 logo: base64 as string,
             }));
         })();
-    }, [clubData.logo]);
+    }, [clubData?.logo]);
 
     const onSubmit = async () => {
         if (checkIsError()) {

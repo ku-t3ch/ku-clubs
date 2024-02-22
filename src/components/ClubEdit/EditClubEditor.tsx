@@ -8,28 +8,10 @@ import { v4 as uuid } from "uuid";
 import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 import toast from "react-hot-toast";
+import { PropsInterface } from "./PropsInterface";
 
-interface Props {
-    id: string | null;
-    clubData:
-    | (Club & {
-        campus: Campus;
-        type: ClubType[];
-        likes: {
-            likeId: string | null;
-        }[];
-        owner: {
-            id: string;
-            email: string | null;
-        };
-        editor: {
-            email: string | null;
-        }[];
-    })
-    | null;
-}
 
-const EditClubEditor: NextPage<Props> = ({ clubData }) => {
+const EditClubEditor: NextPage<PropsInterface> = ({ clubData }) => {
     const clubEditorSettingApi = api.club.settingEditor.useMutation();
     const { data: session } = useSession();
     const [EmailList, setEmailList] = useState<
@@ -37,7 +19,7 @@ const EditClubEditor: NextPage<Props> = ({ clubData }) => {
             id: string;
             email: string;
         }[]
-    >(clubData?.editor.map((e) => ({ id: uuid(), email: e.email! })) || []);
+    >(clubData?.editor?.map((e) => ({ id: uuid(), email: e.email! })) || []);
 
     const handleAddEmail = () => {
         const lastEmpty = EmailList.filter((e) => e.email === "");
@@ -51,7 +33,7 @@ const EditClubEditor: NextPage<Props> = ({ clubData }) => {
         setEmailList((pre) => pre.filter((e) => e.id !== id));
     };
 
-    const isOwner = session?.user.email === clubData?.owner.email;
+    const isOwner = session?.user.email === clubData?.owner?.email;
 
     const handleSave = async () => {
         if (!clubData) {
@@ -82,7 +64,7 @@ const EditClubEditor: NextPage<Props> = ({ clubData }) => {
         <div className="flex flex-col gap-x-5 md:flex-row w-full">
             <Form layout="vertical" className="relative flex w-full flex-col rounded-md ">
                 <div className="flex justify-between">
-                    <div className="mb-5 text-xl font-bold">Owner is {clubData?.owner.email}</div>
+                    <div className="mb-5 text-xl font-bold">Owner is {clubData?.owner?.email}</div>
                 </div>
                 <Form.Item label={isOwner ? `เพิ่ม email สำหรับผู้แก้ไข` : `email สำหรับผู้แก้ไข`}>
                     <div className="flex flex-col gap-2">

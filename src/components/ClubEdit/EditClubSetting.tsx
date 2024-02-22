@@ -5,23 +5,12 @@ import { Form, Switch, Typography } from "antd";
 import { api } from "@/utils/api";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { PropsInterface } from "./PropsInterface";
 
-interface Props {
-  id: string | null;
-  clubData:
-    | Club & {
-        campus: Campus;
-        type: ClubType[];
-        likes: {
-          likeId: string | null;
-        }[];
-      };
-}
-
-const EditClubSetting: NextPage<Props> = ({ clubData }) => {
+const EditClubSetting: NextPage<PropsInterface> = ({ clubData }) => {
   const [FormObject, setFormObject] = useState({
-    isPublic: clubData.isPublic,
-    showOnIndex: clubData.showOnIndex,
+    isPublic: clubData!.isPublic,
+    showOnIndex: clubData!.showOnIndex,
   });
   const apiSettingClub = api.club.settingClub.useMutation();
 
@@ -29,7 +18,7 @@ const EditClubSetting: NextPage<Props> = ({ clubData }) => {
     const key = toast.loading("กำลังบันทึกข้อมูล");
     apiSettingClub.mutate(
       {
-        id: clubData.id,
+        id: clubData!.id,
         isPublic: FormObject.isPublic,
         showOnIndex: FormObject.showOnIndex,
       },

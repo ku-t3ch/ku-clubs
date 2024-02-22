@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Layout, Menu, Button, theme, ConfigProvider, Spin } from 'antd';
 import { NextPage } from 'next';
-import { CalendarDaysIcon, ChevronLeftIcon, GaugeIcon, GlobeIcon, LockIcon, PenIcon, PlusIcon, SettingsIcon, UsersRoundIcon } from 'lucide-react';
+import { CalendarDaysIcon, ChevronLeftIcon, GaugeIcon, GlobeIcon, LockIcon, PenIcon, PlusIcon, SettingsIcon, Users, UsersRoundIcon } from 'lucide-react';
 import { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -102,6 +102,12 @@ const WithNavbarEditor: NextPage<Props> = ({ children }) => {
             icon: <LockIcon size={20} />,
             label: 'สิทธิ์การแก้ไข',
             onClick: () => push(`/my-clubs/${query.id}/permission`),
+        },
+        {
+            key: `/my-clubs/[id]/management-team`,
+            icon: <Users size={20} />,
+            label: 'จัดการทีมบริหาร',
+            onClick: () => push(`/my-clubs/${query.id}/management-team`),
         },
         {
             key: `/my-clubs/[id]/publish`,
