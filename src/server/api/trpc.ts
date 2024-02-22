@@ -14,6 +14,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "@/server/auth";
 import { prisma } from "@/server/db";
+import checkCanEdit from "@/utils/checkCanEdit";
 
 /**
  * 1. CONTEXT
@@ -141,6 +142,24 @@ const enforceUserIsAuthedAdmin = t.middleware(async ({ ctx, next }) => {
   });
 });
 
+const enforceUserIsAuthedEditorOwner = t.middleware(async ({ ctx, next, input }) => {
+  const inputBody = input as { clubId: string };
+  if (!ctx.session || !ctx.session.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  if (!(await checkCanEdit(inputBody.clubId, ctx.session.user.email!))) {
+    throw new TRPCError({ message: "You can't edit this club", code: "FORBIDDEN" });
+  }
+
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
 /**
  * Protected (authenticated) procedure
  *
@@ -151,3 +170,4 @@ const enforceUserIsAuthedAdmin = t.middleware(async ({ ctx, next }) => {
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 export const protectedProcedureAdmin = t.procedure.use(enforceUserIsAuthedAdmin);
+export const protectedProcedureEditorOwner = t.procedure.use(enforceUserIsAuthedEditorOwner);

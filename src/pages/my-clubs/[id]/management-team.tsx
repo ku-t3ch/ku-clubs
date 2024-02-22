@@ -28,6 +28,26 @@ export async function getServerSideProps(ctx: NextPageContext) {
                     likeId: true,
                 },
             },
+            president: {
+                select: {
+                    email: true,
+                },
+            },
+            vice_president: {
+                select: {
+                    email: true,
+                },
+            },
+            secretary: {
+                select: {
+                    email: true,
+                },
+            },
+            treasurer: {
+                select: {
+                    email: true,
+                },
+            },
             type: true,
             owner: {
                 select: {
@@ -67,12 +87,23 @@ interface Props {
         editor: {
             email: string | null;
         }[];
+        president: {
+            email: string | null;
+        } | null;
+        vice_president: {
+            email: string | null;
+        } | null;
+        secretary: {
+            email: string | null;
+        } | null;
+        treasurer: {
+            email: string | null;
+        } | null;
     })
     | null;
 }
 
 const ManagementTeam: NextPage<Props> = ({ id, clubData }) => {
-
     if (!clubData) {
         return <ClubNotFound />;
     }

@@ -16,6 +16,18 @@ export interface PropsInterface {
         editor?: {
           email: string | null;
         }[];
+        president: {
+          email: string | null;
+        } | null;
+        vice_president: {
+          email: string | null;
+        } | null;
+        secretary: {
+          email: string | null;
+        } | null;
+        treasurer: {
+          email: string | null;
+        } | null;
       })
     | null;
 }
